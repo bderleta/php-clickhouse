@@ -6,7 +6,7 @@
 
 extern "C" {
 
-PHP_FUNCTION(clickhouse_test);
+PHP_FUNCTION(clickhouse_test); 
 
 extern zend_module_entry clickhouse_module_entry;
 #define phpext_clickhouse_ptr &clickhouse_module_entry
