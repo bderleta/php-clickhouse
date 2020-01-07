@@ -33,16 +33,16 @@ void chc_destruct(void* instance) {
 
 void chc_select(void* instance, char* query, zend_fcall_info* fci, zend_fcall_info_cache* fci_cache) {
 	Client* client = (Client*)instance;
-	client->Select(string(query), [] (const Block& block)
+	client->Select(string(query), [] (const Block& dblock)
 	{
 		zval block;
 		array_init(&block);
-		for (size_t i = 0; i < block.GetRowCount(); ++i) {
+		for (size_t i = 0; i < dblock.GetRowCount(); ++i) {
 			zval row;
 			array_init(&row);
-			for (size_t j = 0; j < block.GetColumnCount(); ++j) {
-				switch (block[j]->Type()->GetCode()) {
-#define CASE(TYPE) case Type::Code::TYPE: add_next_index_long(&row, block[j]->As<ColumnTYPE>()->At(i)); break;
+			for (size_t j = 0; j < dblock.GetColumnCount(); ++j) {
+				switch (dblock[j]->Type()->GetCode()) {
+#define CASE(TYPE) case Type::Code::TYPE: add_next_index_long(&row, dblock[j]->As<ColumnTYPE>()->At(i)); break;
 					CASE(Int8)
 					CASE(Int16)
 					CASE(Int32)
@@ -57,13 +57,13 @@ void chc_select(void* instance, char* query, zend_fcall_info* fci, zend_fcall_in
 					CASE(Decimal64)
 					CASE(Decimal128)
 #undef CASE
-#define CASE(TYPE) case TYPE: add_next_index_double(&row, block[j]->As<ColumnTYPE>()->At(i)); break;
+#define CASE(TYPE) case TYPE: add_next_index_double(&row, dblock[j]->As<ColumnTYPE>()->At(i)); break;
 					CASE(Float32)
 					CASE(Float64)
 #undef CASE
 					case String:
 					case FixedString:
-						add_next_index_string(&row, block[j]->As<ColumnString>()->At(i), block[j]->As<ColumnString>()->At(i).length(), true);
+						add_next_index_string(&row, dblock[j]->As<ColumnString>()->At(i), dblock[j]->As<ColumnString>()->At(i).length(), true);
 				}
 			}
 			add_next_index_zval(&block, &row);
