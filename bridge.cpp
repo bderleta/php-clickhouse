@@ -44,21 +44,21 @@ void chc_select(void* instance, char* query, zend_fcall_info* fci, zend_fcall_in
 				for (size_t j = 0; j < dblock.GetColumnCount(); ++j) {
 					switch (dblock[j]->Type()->GetCode()) {
 						case Type::Code::Int8:
-							add_next_index_long(&row, dblock[j]->As<ColumnInt8>()->At(i)); break
+							add_next_index_long(&row, dblock[j]->As<ColumnInt8>()->At(i)); break;
 						case Type::Code::UInt8:
-							add_next_index_long(&row, dblock[j]->As<ColumnUInt8>()->At(i)); break
+							add_next_index_long(&row, dblock[j]->As<ColumnUInt8>()->At(i)); break;
 						case Type::Code::Int16:
-							add_next_index_long(&row, dblock[j]->As<ColumnInt16>()->At(i)); break
+							add_next_index_long(&row, dblock[j]->As<ColumnInt16>()->At(i)); break;
 						case Type::Code::UInt16:
-							add_next_index_long(&row, dblock[j]->As<ColumnUInt16>()->At(i)); break
+							add_next_index_long(&row, dblock[j]->As<ColumnUInt16>()->At(i)); break;
 						case Type::Code::Int32:
-							add_next_index_long(&row, dblock[j]->As<ColumnInt32>()->At(i)); break
+							add_next_index_long(&row, dblock[j]->As<ColumnInt32>()->At(i)); break;
 						case Type::Code::UInt32:
-							add_next_index_long(&row, dblock[j]->As<ColumnUInt32>()->At(i)); break
+							add_next_index_long(&row, dblock[j]->As<ColumnUInt32>()->At(i)); break;
 						case Type::Code::Int64:
-							add_next_index_long(&row, dblock[j]->As<ColumnInt64>()->At(i)); break
+							add_next_index_long(&row, dblock[j]->As<ColumnInt64>()->At(i)); break;
 						case Type::Code::UInt64:
-							add_next_index_long(&row, dblock[j]->As<ColumnUInt64>()->At(i)); break
+							add_next_index_long(&row, dblock[j]->As<ColumnUInt64>()->At(i)); break;
 						case Type::Code::Float32:
 							add_next_index_double(&row, dblock[j]->As<ColumnFloat32>()->At(i)); break;
 						case Type::Code::Float64: 
