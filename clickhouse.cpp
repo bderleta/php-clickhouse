@@ -86,6 +86,8 @@ PHP_MINIT_FUNCTION(clickhouse)
     zend_class_entry tmp_ce;
     INIT_CLASS_ENTRY(tmp_ce, "ClickHouse", clickhouse_functions);
     clickhouse_ce = zend_register_internal_class(&tmp_ce TSRMLS_CC);
+	clickhouse_ce->create_object = clickhouse_create_object_handler;
+	memcpy(&clickhouse_object_handlers, zend_get_std_object_handlers(), sizeof(zend_object_handlers));
     return SUCCESS;
 }
 
