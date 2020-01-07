@@ -3,15 +3,30 @@
 #endif
 #include "php.h"
 #include "php_clickhouse.h"
+#include <clickhouse/client.h>
 
 #include "ext/standard/info.h"
 
 extern "C" {
 
-zend_class_entry *clickhouse_ce;	
+ZEND_BEGIN_ARG_INFO_EX(arginfo___construct, 0, 0, 0)
+	ZEND_ARG_INFO(0, host)
+	ZEND_ARG_INFO(0, username)
+	ZEND_ARG_INFO(0, password)
+	ZEND_ARG_INFO(0, schema)
+	ZEND_ARG_INFO(0, port)
+ZEND_END_ARG_INFO()	
 	
+zend_class_entry *clickhouse_ce;	
+static zend_object_handlers clickhouse_object_handlers;
+
+typedef struct _clickhouse_object {
+    Client* client;
+    long connected;
+} clickhouse_object;
+
 zend_function_entry clickhouse_functions[] = {
-    PHP_FE(clickhouse_test, NULL)
+    PHP_ME(ClickHouse, __construct, arginfo___construct, ZEND_ACC_PUBLIC)
     PHP_FE_END
 };
 
@@ -36,22 +51,46 @@ zend_module_entry clickhouse_module_entry = {
 ZEND_GET_MODULE(clickhouse)
 #endif
 
-PHP_RINIT_FUNCTION(clickhouse) {
+static void clickhouse_free_object_storage_handler(clickhouse_object *intern TSRMLS_DC)
+{
+    efree(intern);
+}
+
+zend_object_value clickhouse_create_object_handler(zend_class_entry *class_type TSRMLS_DC)
+{
+    zend_object_value retval;
+    clickhouse_object *intern = emalloc(sizeof(clickhouse_object));
+    memset(intern, 0, sizeof(clickhouse_object));
+    retval.handle = zend_objects_store_put(
+        intern,
+        (zend_objects_store_dtor_t) zend_objects_destroy_object,
+        (zend_objects_free_object_storage_t) clickhouse_free_object_storage_handler,
+        NULL TSRMLS_CC
+    );
+    retval.handlers = &clickhouse_object_handlers;
+    return retval;
+}
+
+PHP_RINIT_FUNCTION(clickhouse) 
+{
     return SUCCESS;
 }
 
-PHP_RSHUTDOWN_FUNCTION(clickhouse) {
+PHP_RSHUTDOWN_FUNCTION(clickhouse) 
+{
     return SUCCESS;
 }
 
-PHP_MINIT_FUNCTION(clickhouse) {
+PHP_MINIT_FUNCTION(clickhouse) 
+{
     zend_class_entry tmp_ce;
     INIT_CLASS_ENTRY(tmp_ce, "ClickHouse", clickhouse_functions);
     clickhouse_ce = zend_register_internal_class(&tmp_ce TSRMLS_CC);
     return SUCCESS;
 }
 
-PHP_MSHUTDOWN_FUNCTION(clickhouse) {
+PHP_MSHUTDOWN_FUNCTION(clickhouse)
+{
     return SUCCESS;
 }
 
@@ -69,9 +108,9 @@ PHP_MINFO_FUNCTION(clickhouse)
     php_info_print_table_end();
 }
 
-PHP_FUNCTION(clickhouse_test)
+PHP_METHOD(ClickHouse, __construct) 
 {
-    RETURN_TRUE();
+
 }
 
 }
