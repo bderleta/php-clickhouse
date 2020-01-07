@@ -16,6 +16,7 @@ PHP_RSHUTDOWN_FUNCTION(clickhouse);
 PHP_MINFO_FUNCTION(clickhouse);
 
 PHP_METHOD(ClickHouse, __construct); 
+PHP_METHOD(ClickHouse, select); 
 
 }
 
