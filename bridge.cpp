@@ -36,6 +36,8 @@ void chc_select(void* instance, char* query, zend_fcall_info* fci, zend_fcall_in
 		{
 			zval block, result;
 			int ret;
+			if (dblock.GetRowCount() == 0)
+				return;
 			/* Build an array from resulting block */
 			array_init(&block);
 			for (size_t i = 0; i < dblock.GetRowCount(); ++i) {
