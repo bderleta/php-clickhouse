@@ -4,7 +4,7 @@ using namespace std;
 using namespace clickhouse;
 
 void* chc_construct(char* host, char* username, char* password, char* default_database, long port) {
-	try {
+	//try {
 		ClientOptions opts;
 		if (host) 
 			opts.SetHost(string(host));
@@ -18,10 +18,10 @@ void* chc_construct(char* host, char* username, char* password, char* default_da
 			opts.SetPort(port);
 		Client* client = new Client(opts);
 		return (void*)client;
-	} catch (const std::system_error& e) {
-		zend_throw_exception_ex(zend_exception_get_default(), 1 TSRMLS_CC, e.what());
-		return NULL;
-	}
+	//} catch (const std::system_error& e) {
+	//	zend_throw_exception_ex(zend_exception_get_default(), 1 TSRMLS_CC, e.what());
+	//	return NULL;
+	//}
 }
 
 void chc_destruct(void* instance) {
