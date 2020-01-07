@@ -141,8 +141,7 @@ PHP_METHOD(ClickHouse, select)
 	ZEND_ASSERT(Z_TYPE_P(zv_client) == IS_RESOURCE);
 	void* ch_object = (void*)zend_fetch_resource(Z_RES_P(zv_client), "client", clickhouse_obj_res_num);
 	chc_select(ch_object, query, &fci, &fci_cache);
-	
-	zend_release_fcall_info_cache(&fci_cache);
+
 	RETURN_NULL();
 }
 
