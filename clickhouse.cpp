@@ -102,7 +102,7 @@ PHP_METHOD(ClickHouse, __construct)
 
 	ZEND_PARSE_PARAMETERS_START_EX(ZEND_PARSE_PARAMS_THROW, 0, 5)
 		Z_PARAM_OPTIONAL
-		Z_PARAM_STRING(host, host_len) /
+		Z_PARAM_STRING(host, host_len)
 		Z_PARAM_STRING(user, user_len)
 		Z_PARAM_STRING(password, password_len)
 		Z_PARAM_STRING(default_database, default_database_len)
