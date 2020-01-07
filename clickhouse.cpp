@@ -9,7 +9,7 @@
 extern "C" {
 
 zend_function_entry clickhouse_functions[] = {
-    PHP_FE(clickhouse_info, NULL)
+    PHP_FE(clickhouse_test, NULL)
     {NULL, NULL, NULL}
 };
 
