@@ -37,6 +37,7 @@ size_t chc_select(void* instance, char* query, zend_fcall_info* fci, zend_fcall_
 		{
 			zval block, result;
 			int ret;
+			php_printf("Callback: %ul\r\n", dblock.GetRowCount());
 			if (dblock.GetRowCount() == 0)
 				return;
 			total += dblock.GetRowCount();
