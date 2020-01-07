@@ -100,7 +100,7 @@ PHP_METHOD(ClickHouse, __construct)
 	zval* obj = getThis();
 	zval zv_client;
 	ZVAL_RES(&zv_client, res_client);
-	zend_update_property(clickhouse_ce, obj, "connection", sizeof("connection") - 1, zv_client TSRMLS_CC);
+	zend_update_property(clickhouse_ce, obj, "connection", sizeof("connection") - 1, &zv_client TSRMLS_CC);
 }
 
 }
