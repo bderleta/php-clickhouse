@@ -25,6 +25,12 @@ typedef struct _clickhouse_object {
     long connected;
 } clickhouse_object;
 
+
+PHP_METHOD(ClickHouse, __construct) 
+{
+
+}
+
 zend_function_entry clickhouse_functions[] = {
     PHP_ME(ClickHouse, __construct, arginfo___construct, ZEND_ACC_PUBLIC)
     PHP_FE_END
@@ -108,11 +114,6 @@ PHP_MINFO_FUNCTION(clickhouse)
     php_info_print_table_start();
     php_info_print_table_row(1, "ClickHouse Module realized by Bartosz Derleta.");
     php_info_print_table_end();
-}
-
-PHP_METHOD(ClickHouse, __construct) 
-{
-
 }
 
 }
