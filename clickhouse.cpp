@@ -95,7 +95,21 @@ PHP_MINFO_FUNCTION(clickhouse)
 
 PHP_METHOD(ClickHouse, __construct) 
 {
-	void* ch_object = chc_construct("10.8.86.165", NULL, NULL, NULL, 9000);
+	char *host = NULL, *user = NULL, *password = NULL, *default_database = NULL;
+	size_t host_len = 0, user_len = 0, password_len = 0, default_database_len = 0;
+	zend_long port;
+	zend_bool port_null;
+
+	ZEND_PARSE_PARAMETERS_START_EX(ZEND_PARSE_PARAMS_THROW, 0, 5)
+		Z_PARAM_OPTIONAL
+		Z_PARAM_STRING(host, host_len) /
+		Z_PARAM_STRING(user, user_len)
+		Z_PARAM_STRING(password, password_len)
+		Z_PARAM_STRING(default_database, default_database_len)
+		Z_PARAM_LONG_EX(port, port_null, 1, 0)
+	ZEND_PARSE_PARAMETERS_END();
+	
+	void* ch_object = chc_construct(host, user, password, default_database, port_null ? 0 : port);
 	zend_resource *res_client = zend_register_resource(ch_object, clickhouse_obj_res_num);
 	zval* obj = getThis();
 	zval zv_client;
