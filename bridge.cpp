@@ -4,7 +4,7 @@ using namespace std;
 using namespace clickhouse;
 
 void* chc_construct(char* host, char* username, char* password, char* default_database, long port) {
-	//try {
+	try {
 		ClientOptions opts;
 		if (host) 
 			opts.SetHost(string(host));
@@ -18,10 +18,10 @@ void* chc_construct(char* host, char* username, char* password, char* default_da
 			opts.SetPort(port);
 		Client* client = new Client(opts);
 		return (void*)client;
-	//} catch (const std::system_error& e) {
-	//	zend_throw_exception_ex(zend_exception_get_default(), 1 TSRMLS_CC, e.what());
-	//	return NULL;
-	//}
+	} catch (const std::system_error& e) {
+		zend_throw_exception_ex(zend_exception_get_default(), 1 TSRMLS_CC, e.what());
+		return NULL;
+	}
 }
 
 void chc_destruct(void* instance) {
@@ -37,17 +37,20 @@ size_t chc_select(void* instance, char* query, zend_fcall_info* fci, zend_fcall_
 		{
 			zval block, result;
 			int ret;
-			size_t rowCount = dblock.GetRowCount();
+			size_t rowCount = dblock.GetRowCount(), colCount = dblock.GetColumnCount();
 			if (rowCount == 0)
 				return;
 			total += rowCount;
 			/* Build an array from resulting block */
+			long Type::Code[colCount];
+			for (size_t j = 0; j < colCount; ++j)
+				codes[j] = dblock[j]->Type()->GetCode();
 			array_init(&block);
 			for (size_t i = 0; i < rowCount; ++i) {
 				zval row;
 				array_init(&row);
-				for (size_t j = 0; j < dblock.GetColumnCount(); ++j) {
-					switch (dblock[j]->Type()->GetCode()) {
+				for (size_t j = 0; j < colCount; ++j) {
+					switch (codes[j]) {
 						case Type::Code::Int8:
 							add_assoc_long(&row, dblock.GetColumnName(j).c_str(), dblock[j]->As<ColumnInt8>()->At(i)); break;
 						case Type::Code::UInt8:
