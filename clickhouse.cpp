@@ -21,7 +21,7 @@ zend_class_entry *clickhouse_ce;
 static zend_object_handlers clickhouse_object_handlers;
 
 typedef struct _clickhouse_object {
-    Client* client;
+    void* client;
     long connected;
 } clickhouse_object;
 
