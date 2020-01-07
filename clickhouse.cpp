@@ -8,9 +8,11 @@
 
 extern "C" {
 
+zend_class_entry *clickhouse_ce;	
+	
 zend_function_entry clickhouse_functions[] = {
     PHP_FE(clickhouse_test, NULL)
-    {NULL, NULL, NULL}
+    PHP_FE_END
 };
 
 zend_module_entry clickhouse_module_entry = {
@@ -43,6 +45,9 @@ PHP_RSHUTDOWN_FUNCTION(clickhouse) {
 }
 
 PHP_MINIT_FUNCTION(clickhouse) {
+    zend_class_entry tmp_ce;
+    INIT_CLASS_ENTRY(tmp_ce, "ClickHouse", clickhouse_functions);
+    clickhouse_ce = zend_register_internal_class(&tmp_ce TSRMLS_CC);
     return SUCCESS;
 }
 
