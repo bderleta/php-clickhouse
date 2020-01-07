@@ -1,6 +1,4 @@
 #include "bridge.h"
-#include "php.h"
-#include "Zend/zend_exceptions.h"
 
 using namespace std;
 using namespace clickhouse;
