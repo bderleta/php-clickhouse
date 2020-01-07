@@ -4,7 +4,7 @@ using namespace std;
 using namespace clickhouse;
 
 void* construct(char* host, char* username, char* password, char* default_database, long port) {
-	ClientOptions opts();
+	ClientOptions opts;
 	if (host) 
 		opts.SetHost(string(host));
 	if (username)
