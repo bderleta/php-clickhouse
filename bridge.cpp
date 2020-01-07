@@ -42,28 +42,12 @@ void chc_select(void* instance, char* query, zend_fcall_info* fci, zend_fcall_in
 			array_init(&row);
 			for (size_t j = 0; j < dblock.GetColumnCount(); ++j) {
 				switch (dblock[j]->Type()->GetCode()) {
-#define CASE(TYPE) case Type::Code::TYPE: add_next_index_long(&row, dblock[j]->As<ColumnTYPE>()->At(i)); break;
-					CASE(Int8)
-					CASE(Int16)
-					CASE(Int32)
-					CASE(Int64)
-					CASE(UInt8)
-					CASE(UInt16)
-					CASE(UInt32)
-					CASE(UInt64)
-					CASE(Int128)
-					CASE(Decimal)
-					CASE(Decimal32)
-					CASE(Decimal64)
-					CASE(Decimal128)
-#undef CASE
-#define CASE(TYPE) case TYPE: add_next_index_double(&row, dblock[j]->As<ColumnTYPE>()->At(i)); break;
-					CASE(Float32)
-					CASE(Float64)
-#undef CASE
-					case String:
-					case FixedString:
+					case Type::Code::String:
+					case Type::Code::FixedString:
 						add_next_index_string(&row, dblock[j]->As<ColumnString>()->At(i), dblock[j]->As<ColumnString>()->At(i).length(), true);
+						break;
+					default:
+						add_next_index_long(&row, 69);
 				}
 			}
 			add_next_index_zval(&block, &row);
