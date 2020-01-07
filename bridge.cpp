@@ -29,15 +29,17 @@ void chc_destruct(void* instance) {
 	delete client;
 }
 
-void chc_select(void* instance, char* query, zend_fcall_info* fci, zend_fcall_info_cache* fci_cache) {
+size_t chc_select(void* instance, char* query, zend_fcall_info* fci, zend_fcall_info_cache* fci_cache) {
 	Client* client = (Client*)instance;
 	try {
-		client->Select(string(query), [&fci, &fci_cache] (const Block& dblock)
+		size_t total = 0;
+		client->Select(string(query), [&fci, &fci_cache, &total] (const Block& dblock)
 		{
 			zval block, result;
 			int ret;
 			if (dblock.GetRowCount() == 0)
 				return;
+			total += dblock.GetRowCount();
 			/* Build an array from resulting block */
 			array_init(&block);
 			for (size_t i = 0; i < dblock.GetRowCount(); ++i) {
@@ -82,6 +84,7 @@ void chc_select(void* instance, char* query, zend_fcall_info* fci, zend_fcall_in
 			ret = zend_call_function(fci, fci_cache);
 			i_zval_ptr_dtor(&block);
 		});
+		return total;
 	} catch (const std::system_error& e) {
 		zend_throw_exception_ex(zend_exception_get_default(), 1 TSRMLS_CC, e.what());
 	}

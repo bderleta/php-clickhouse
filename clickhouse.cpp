@@ -126,7 +126,7 @@ PHP_METHOD(ClickHouse, __construct)
 PHP_METHOD(ClickHouse, select) 
 {
 	char *query;
-	size_t query_len;
+	size_t query_len, total;
 	zval *zv_client;	
 	
 	zend_fcall_info fci = {0};
@@ -140,9 +140,9 @@ PHP_METHOD(ClickHouse, select)
 	zv_client = zend_read_property(clickhouse_ce, getThis(), "connection", sizeof("connection") - 1, 1, NULL TSRMLS_CC);
 	ZEND_ASSERT(Z_TYPE_P(zv_client) == IS_RESOURCE);
 	void* ch_object = (void*)zend_fetch_resource(Z_RES_P(zv_client), "client", clickhouse_obj_res_num);
-	chc_select(ch_object, query, &fci, &fci_cache);
+	total = chc_select(ch_object, query, &fci, &fci_cache);
 
-	RETURN_TRUE;
+	RETURN_LONG(total);
 }
 
 }
