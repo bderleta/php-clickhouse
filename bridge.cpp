@@ -1,5 +1,6 @@
 #include "bridge.h"
 #include "php.h"
+#include "Zend/zend_exceptions.h"
 
 using namespace std;
 using namespace clickhouse;
@@ -21,7 +22,7 @@ void* chc_construct(char* host, char* username, char* password, char* default_da
 		return (void*)client;
 	} catch (const std::system_error& e) {
 		zend_throw_exception_ex(zend_exception_get_default(), 1 TSRMLS_CC, e.what());
-		return;
+		return NULL;
 	}
 }
 
