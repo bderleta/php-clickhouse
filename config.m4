@@ -33,7 +33,7 @@ if test "$PHP_CLICKHOUSE" != "no"; then
     PHP_ADD_INCLUDE($PHP_CLICKHOUSE/include)
   fi
 
-	PHP_NEW_EXTENSION(clickhouse, clickhouse.cpp, $ext_shared)
+	PHP_NEW_EXTENSION(clickhouse, bridge.cpp clickhouse.cpp, $ext_shared)
 fi
 
 
