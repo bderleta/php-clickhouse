@@ -42,7 +42,7 @@ size_t chc_select(void* instance, char* query, zend_fcall_info* fci, zend_fcall_
 				return;
 			total += rowCount;
 			/* Build an array from resulting block */
-			long Type::Code[colCount];
+			Type::Code codes[colCount];
 			for (size_t j = 0; j < colCount; ++j)
 				codes[j] = dblock[j]->Type()->GetCode();
 			array_init(&block);
