@@ -33,7 +33,7 @@ void chc_destruct(void* instance) {
 
 void chc_select(void* instance, char* query, zend_fcall_info* fci, zend_fcall_info_cache* fci_cache) {
 	Client* client = (Client*)instance;
-	client.Select(string(query), [] (const Block& block)
+	client->Select(string(query), [] (const Block& block)
 	{
 		zval block;
 		array_init(&block);
@@ -41,8 +41,8 @@ void chc_select(void* instance, char* query, zend_fcall_info* fci, zend_fcall_in
 			zval row;
 			array_init(&row);
 			for (size_t j = 0; j < block.GetColumnCount(); ++j) {
-				switch (block[j]->Type()) {
-#define CASE(TYPE) case TYPE: add_next_index_long(&row, block[j]->As<ColumnTYPE>()->At(i)); break;
+				switch (block[j]->Type()->GetCode()) {
+#define CASE(TYPE) case Type::Code::TYPE: add_next_index_long(&row, block[j]->As<ColumnTYPE>()->At(i)); break;
 					CASE(Int8)
 					CASE(Int16)
 					CASE(Int32)
