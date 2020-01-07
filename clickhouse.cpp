@@ -142,7 +142,7 @@ PHP_METHOD(ClickHouse, select)
 	void* ch_object = (void*)zend_fetch_resource(Z_RES_P(zv_client), "client", clickhouse_obj_res_num);
 	chc_select(ch_object, query, &fci, &fci_cache);
 
-	RETURN_NULL();
+	RETURN_TRUE;
 }
 
 }
