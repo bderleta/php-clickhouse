@@ -9,11 +9,13 @@
 
 extern "C" {
 
+int clickhouse_obj_res_num; 
+	
 ZEND_BEGIN_ARG_INFO_EX(arginfo___construct, 0, 0, 0)
 	ZEND_ARG_INFO(0, host)
 	ZEND_ARG_INFO(0, username)
 	ZEND_ARG_INFO(0, password)
-	ZEND_ARG_INFO(0, schema)
+	ZEND_ARG_INFO(0, default_database)
 	ZEND_ARG_INFO(0, port)
 ZEND_END_ARG_INFO()	
 	
@@ -55,12 +57,19 @@ PHP_RSHUTDOWN_FUNCTION(clickhouse)
     return SUCCESS;
 }
 
+static void clickhouse_obj_res_dtor(zend_resource *rsrc)
+{
+    chc_destruct((void*)rsrc->ptr);
+}
+
 PHP_MINIT_FUNCTION(clickhouse) 
 {
+	/* Register class name */
     zend_class_entry tmp_ce;
     INIT_CLASS_ENTRY(tmp_ce, "ClickHouse", clickhouse_functions);
     clickhouse_ce = zend_register_internal_class(&tmp_ce TSRMLS_CC);
-	
+	/* Register connection object as resource */
+	clickhouse_obj_res_num = zend_register_list_destructors_ex(clickhouse_obj_res_dtor, NULL, "clickhouse_client", module_number);
     return SUCCESS;
 }
 
