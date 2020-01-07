@@ -70,7 +70,7 @@ PHP_MINIT_FUNCTION(clickhouse)
     clickhouse_ce = zend_register_internal_class(&tmp_ce TSRMLS_CC);
 	zend_declare_property_null(clickhouse_ce, "connection", sizeof("connection") - 1, ZEND_ACC_PRIVATE TSRMLS_CC);
 	/* Register connection object as resource */
-	clickhouse_obj_res_num = zend_register_list_destructors_ex(clickhouse_obj_res_dtor, NULL, "clickhouse_client", module_number);
+	clickhouse_obj_res_num = zend_register_list_destructors_ex(clickhouse_obj_res_dtor, NULL, "client", module_number);
     return SUCCESS;
 }
 
