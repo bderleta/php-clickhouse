@@ -18,11 +18,17 @@ ZEND_BEGIN_ARG_INFO_EX(arginfo___construct, 0, 0, 0)
 	ZEND_ARG_INFO(0, default_database)
 	ZEND_ARG_INFO(0, port)
 ZEND_END_ARG_INFO()	
+		
+ZEND_BEGIN_ARG_INFO_EX(arginfo_select, 0, 0, 0)
+	ZEND_ARG_INFO(0, query)
+	ZEND_ARG_INFO(0, callback)
+ZEND_END_ARG_INFO()	
 	
 zend_class_entry *clickhouse_ce;	
 
 zend_function_entry clickhouse_functions[] = {
     PHP_ME(ClickHouse, __construct, arginfo___construct, ZEND_ACC_PUBLIC)
+	PHP_ME(ClickHouse, select, arginfo_select, ZEND_ACC_PUBLIC)
     PHP_FE_END
 };
 
@@ -115,6 +121,30 @@ PHP_METHOD(ClickHouse, __construct)
 	zval zv_client;
 	ZVAL_RES(&zv_client, res_client);
 	zend_update_property(clickhouse_ce, obj, "connection", sizeof("connection") - 1, &zv_client TSRMLS_CC);
+}
+
+PHP_METHOD(ClickHouse, select) 
+{
+	char *query;
+	size_t query_len;
+	zval *zv_client;	
+	zval* obj = getThis();
+	
+	zend_fcall_info fci = {0};
+	zend_fcall_info_cache fci_cache;
+	
+	ZEND_PARSE_PARAMETERS_START(2, 2)
+	        Z_PARAM_STRING(query, query_len)
+	        Z_PARAM_FUNC_EX(fci, fci_cache, 1, 0)
+	ZEND_PARSE_PARAMETERS_END();	
+	
+	zv_client = zend_read_property(clickhouse_ce, obj, "connection", sizeof("connection") - 1, 1 TSRMLS_CC);
+	ZEND_ASSERT(Z_TYPE_P(zv_client) == IS_RESOURCE);
+	void* ch_object = (void*)zend_fetch_resource(Z_RESVAL_P(zv_client), "client", clickhouse_obj_res_num);
+	chc_select(ch_object, query, &fci, &fci_cache);
+	
+	zend_release_fcall_info_cache(&fci_cache);
+	RETURN_NULL();
 }
 
 }

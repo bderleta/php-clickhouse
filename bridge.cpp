@@ -35,7 +35,9 @@ void chc_select(void* instance, char* query, zend_fcall_info* fci, zend_fcall_in
 	Client* client = (Client*)instance;
 	client->Select(string(query), [] (const Block& dblock)
 	{
-		zval block;
+		zval block, result;
+		int ret;
+		/* Build an array from resulting block */
 		array_init(&block);
 		for (size_t i = 0; i < dblock.GetRowCount(); ++i) {
 			zval row;
@@ -52,5 +54,12 @@ void chc_select(void* instance, char* query, zend_fcall_info* fci, zend_fcall_in
 			}
 			add_next_index_zval(&block, &row);
 		}
+		/* Send to callback */
+		fci->retval = &result;
+		fci->param_count = 1;
+		fci->params = &block;
+		fci->no_separation = 0;
+		ret = zend_call_function(fci, fci_cache);
+		i_zval_ptr_dtor(&block);
 	});
 }
