@@ -59,6 +59,7 @@ PHP_RSHUTDOWN_FUNCTION(clickhouse)
 
 static void clickhouse_obj_res_dtor(zend_resource *rsrc)
 {
+	php_printf("Calling conn dtor!!!\r\n");
     chc_destruct((void*)rsrc->ptr);
 }
 
