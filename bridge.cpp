@@ -37,13 +37,13 @@ size_t chc_select(void* instance, char* query, zend_fcall_info* fci, zend_fcall_
 		{
 			zval block, result;
 			int ret;
-			php_printf("Callback: %ul\r\n", dblock.GetRowCount());
-			if (dblock.GetRowCount() == 0)
+			size_t rowCount = dblock.GetRowCount();
+			if (rowCount == 0)
 				return;
-			total += dblock.GetRowCount();
+			total += rowCount;
 			/* Build an array from resulting block */
 			array_init(&block);
-			for (size_t i = 0; i < dblock.GetRowCount(); ++i) {
+			for (size_t i = 0; i < rowCount; ++i) {
 				zval row;
 				array_init(&row);
 				for (size_t j = 0; j < dblock.GetColumnCount(); ++j) {
