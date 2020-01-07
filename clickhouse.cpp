@@ -109,7 +109,7 @@ PHP_METHOD(ClickHouse, __construct)
 		Z_PARAM_LONG_EX(port, port_null, 1, 0)
 	ZEND_PARSE_PARAMETERS_END();
 	
-	printf("Calling constructor with params %s, %s, %s, %s, %lu", host, user, password, default_database, port);
+	php_printf("Calling constructor with params %s, %s, %s, %s, %lu", host, user, password, default_database, port);
 	
 	void* ch_object = chc_construct(host, user, password, default_database, port_null ? 0 : port);
 	zend_resource *res_client = zend_register_resource(ch_object, clickhouse_obj_res_num);
