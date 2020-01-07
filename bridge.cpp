@@ -56,11 +56,11 @@ void chc_select(void* instance, char* query, zend_fcall_info* fci, zend_fcall_in
 					CASE(Decimal32)
 					CASE(Decimal64)
 					CASE(Decimal128)
-#undef CASE(TYPE)
+#undef CASE
 #define CASE(TYPE) case TYPE: add_next_index_double(&row, block[j]->As<ColumnTYPE>()->At(i)); break;
 					CASE(Float32)
 					CASE(Float64)
-#undef CASE(TYPE)
+#undef CASE
 					case String:
 					case FixedString:
 						add_next_index_string(&row, block[j]->As<ColumnString>()->At(i), block[j]->As<ColumnString>()->At(i).length(), true);
