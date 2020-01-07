@@ -27,7 +27,7 @@ zend_module_entry clickhouse_module_entry = {
     PHP_RSHUTDOWN(clickhouse),
     PHP_MINFO(clickhouse),
 #if ZEND_MODULE_API_NO >= 20010901
-    PHP_LZSTRING_VERSION,
+    PHP_CLICKHOUSE_VERSION,
 #endif
     STANDARD_MODULE_PROPERTIES
 };
