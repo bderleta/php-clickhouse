@@ -68,6 +68,7 @@ PHP_MINIT_FUNCTION(clickhouse)
     zend_class_entry tmp_ce;
     INIT_CLASS_ENTRY(tmp_ce, "ClickHouse", clickhouse_functions);
     clickhouse_ce = zend_register_internal_class(&tmp_ce TSRMLS_CC);
+	zend_declare_property_null(clickhouse_ce, "connection", sizeof("connection") - 1, ZEND_ACC_PRIVATE TSRMLS_CC);
 	/* Register connection object as resource */
 	clickhouse_obj_res_num = zend_register_list_destructors_ex(clickhouse_obj_res_dtor, NULL, "clickhouse_client", module_number);
     return SUCCESS;
@@ -94,7 +95,12 @@ PHP_MINFO_FUNCTION(clickhouse)
 
 PHP_METHOD(ClickHouse, __construct) 
 {
-
+	void* ch_object = chc_construct("10.8.86.165", NULL, NULL, NULL, 9000);
+	zend_resource *res_client = zend_register_resource(ch_object, clickhouse_obj_res_num);
+	zval* obj = getThis();
+	zval zv_client;
+	ZVAL_RES(&zv_client, res_client);
+	zend_update_property(clickhouse_ce, obj, "connection", sizeof("connection") - 1, zv_client TSRMLS_CC);
 }
 
 }
