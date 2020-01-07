@@ -33,7 +33,7 @@ void chc_destruct(void* instance) {
 
 void chc_select(void* instance, char* query, zend_fcall_info* fci, zend_fcall_info_cache* fci_cache) {
 	Client* client = (Client*)instance;
-	client->Select(string(query), [] (const Block& dblock)
+	client->Select(string(query), [&fci, &fci_cache] (const Block& dblock)
 	{
 		zval block, result;
 		int ret;
