@@ -52,8 +52,6 @@ PHP_MSHUTDOWN_FUNCTION(clickhouse) {
 
 PHP_MINFO_FUNCTION(clickhouse)
 {
-    char buf[32];
-
     php_info_print_table_start();
     php_info_print_table_header(2, "ClickHouse support", "enabled");
     php_info_print_table_row(2, "ClickHouse extension version", PHP_CLICKHOUSE_VERSION);
