@@ -44,7 +44,7 @@ void chc_select(void* instance, char* query, zend_fcall_info* fci, zend_fcall_in
 				switch (dblock[j]->Type()->GetCode()) {
 					case Type::Code::String:
 					case Type::Code::FixedString:
-						add_next_index_string(&row, dblock[j]->As<ColumnString>()->At(i).c_str(), dblock[j]->As<ColumnString>()->At(i).length(), true);
+						add_next_index_stringl(&row, dblock[j]->As<ColumnString>()->At(i).c_str(), dblock[j]->As<ColumnString>()->At(i).length(), true);
 						break;
 					default:
 						add_next_index_long(&row, 69);
