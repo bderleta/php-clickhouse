@@ -85,7 +85,7 @@ size_t chc_select(void* instance, char* query, zend_fcall_info* fci, zend_fcall_
 							add_assoc_long(rowCache[row], colName, dblock[col]->As<ColumnUInt32>()->At(row)); 
 						}
 						break;
-					case Type::Code::Int64
+					case Type::Code::Int64:
 						for (size_t row = 0; row < rowCount; ++row) {
 							add_assoc_long(rowCache[row], colName, dblock[col]->As<ColumnInt64>()->At(row)); 
 						}
