@@ -52,7 +52,7 @@ size_t chc_select(void* instance, char* query, zend_fcall_info* fci, zend_fcall_
 				for (size_t j = 0; j < colCount; ++j) {
 					switch (codes[j]) {
 /* TODO: Significantly optimize iteration over block */						
-#ifdef ASSOC
+#ifdef ASSOC 
 						case Type::Code::Int8:
 							add_assoc_long(&row, dblock.GetColumnName(j).c_str(), dblock[j]->As<ColumnInt8>()->At(i)); break;
 						case Type::Code::UInt8:
