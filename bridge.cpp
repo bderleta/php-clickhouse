@@ -55,7 +55,8 @@ size_t chc_select(void* instance, char* query, zend_fcall_info* fci, zend_fcall_
 			}
 			
 			/* Iterate over columns */
-			for (auto it = dblock.begin(); it != dblock.end(); ++it) {
+			for (size_t col = 0; col < colCount; ++col) {
+				ColumnRef& colRef = dblock[col];
 				
 			}
 			
