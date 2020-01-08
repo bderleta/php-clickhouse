@@ -16,6 +16,7 @@ void* chc_construct(char* host, char* username, char* password, char* default_da
 			opts.SetDefaultDatabase(string(default_database));
 		if (port)
 			opts.SetPort(port);
+		opts.SetCompression(CompressionMethod::LZ4);
 		Client* client = new Client(opts);
 		return (void*)client;
 	} catch (const std::system_error& e) {
