@@ -104,7 +104,7 @@ PHP_METHOD(ClickHouse, __construct)
 {
 	char *host = NULL, *user = NULL, *password = NULL, *default_database = NULL;
 	size_t host_len = 0, user_len = 0, password_len = 0, default_database_len = 0;
-	zend_long port;
+	zend_long port = 9000;
 	zend_bool port_null;
 
 	ZEND_PARSE_PARAMETERS_START_EX(ZEND_PARSE_PARAMS_THROW, 0, 5)
@@ -115,8 +115,8 @@ PHP_METHOD(ClickHouse, __construct)
 		Z_PARAM_STRING(default_database, default_database_len)
 		Z_PARAM_LONG_EX(port, port_null, 1, 0)
 	ZEND_PARSE_PARAMETERS_END();
-	
-	void* ch_object = chc_construct(host, user, password, default_database, port_null ? 0 : port);
+	php_printf("Connecting to Clickhouse %s:%s@%s:%lu/%s...\r\n", user, password, host, port, default_database);
+	void* ch_object = chc_construct(host, user, password, default_database, port_null ? 9000 : port);
 	zend_resource *res_client = zend_register_resource(ch_object, clickhouse_obj_res_num);
 	zval zv_client;
 	ZVAL_RES(&zv_client, res_client);
