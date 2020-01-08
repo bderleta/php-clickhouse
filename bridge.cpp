@@ -53,7 +53,7 @@ size_t chc_select(void* instance, char* query, zend_fcall_info* fci, zend_fcall_
 			
 			/* Iterate over columns */
 			for (size_t col = 0; col < colCount; ++col) {
-				const char* colName = dblock.getColumnName(col).c_str();
+				const char* colName = dblock.GetColumnName(col).c_str();
 				switch (dblock[col]->Type()->GetCode()) {
 					case Type::Code::Int8:
 						for (size_t row = 0; row < rowCount; ++row) {
