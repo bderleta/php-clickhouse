@@ -56,7 +56,7 @@ size_t chc_select(void* instance, char* query, zend_fcall_info* fci, zend_fcall_
 				ColumnRef colRef = dblock[col];
 				switch (colRef->Type()->GetCode()) {
 					case Type::Code::Int8:
-						ColumnInt8& colRefCast = colRef->As<ColumnInt8>;
+						ColumnInt8* colRefCast = colRef->As<ColumnInt8>;
 						for (auto it = colRefCast->begin(); it != colRefCast->end(); ++it) {
 						}
 						break;
