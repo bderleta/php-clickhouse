@@ -108,7 +108,7 @@ size_t chc_select(void* instance, char* query, zend_fcall_info* fci, zend_fcall_
 					case Type::Code::String:
 					case Type::Code::FixedString:
 						for (size_t row = 0; row < rowCount; ++row) {
-							add_assoc_long(rowCache[row], colName, dblock[col]->As<ColumnString>()->At(row).c_str(), dblock[col]->As<ColumnString>()->At(row).length()); 
+							add_assoc_stringl(rowCache[row], colName, dblock[col]->As<ColumnString>()->At(row).c_str(), dblock[col]->As<ColumnString>()->At(row).length()); 
 						}
 						break;
 					default:
