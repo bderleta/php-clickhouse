@@ -105,7 +105,7 @@ PHP_METHOD(ClickHouse, __construct)
 	char *host = NULL, *user = NULL, *password = NULL, *default_database = NULL;
 	size_t host_len = 0, user_len = 0, password_len = 0, default_database_len = 0;
 	zend_long port = 9000;
-	zend_bool port_null;
+	zend_bool port_null = false;
 
 	ZEND_PARSE_PARAMETERS_START_EX(ZEND_PARSE_PARAMS_THROW, 0, 5)
 		Z_PARAM_OPTIONAL
