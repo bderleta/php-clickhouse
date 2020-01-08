@@ -42,9 +42,6 @@ size_t chc_select(void* instance, char* query, zend_fcall_info* fci, zend_fcall_
 				return;
 			total += rowCount;
 			/* Build an array from resulting block */
-			Type::Code codes[colCount];
-			for (size_t j = 0; j < colCount; ++j)
-				codes[j] = dblock[j]->Type()->GetCode();
 			array_init_size(&block, rowCount);
 			zval* rowCache[rowCount];
 			for (size_t i = 0; i < rowCount; ++i) {
@@ -57,7 +54,13 @@ size_t chc_select(void* instance, char* query, zend_fcall_info* fci, zend_fcall_
 			/* Iterate over columns */
 			for (size_t col = 0; col < colCount; ++col) {
 				ColumnRef colRef = dblock[col];
-				
+				switch (colRef->Type()->GetCode()) {
+					case Type::Code::Int8:
+						ColumnInt8& colRefCast = colRef->As<ColumnInt8>;
+						for (auto it = colRefCast->begin(); it != colRefCast->end(); ++it) {
+						}
+						break;
+				}
 			}
 			
 #ifdef DUPA			
