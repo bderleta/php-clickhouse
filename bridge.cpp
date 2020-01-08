@@ -55,8 +55,9 @@ size_t chc_select(void* instance, char* query, zend_fcall_info* fci, zend_fcall_
 			for (size_t col = 0; col < colCount; ++col) {
 				switch (dblock[col]->Type()->GetCode()) {
 					case Type::Code::Int8:
-						auto colRef = dblock[col]->As<ColumnInt8>;
-						
+						for (auto it = dblock[col]->As<ColumnInt8>->begin(); it != dblock[col]->As<ColumnInt8>->end(); ++it) {
+							
+						}
 						break;
 				}
 			}
