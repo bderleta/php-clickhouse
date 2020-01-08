@@ -53,46 +53,57 @@ size_t chc_select(void* instance, char* query, zend_fcall_info* fci, zend_fcall_
 			
 			/* Iterate over columns */
 			for (size_t col = 0; col < colCount; ++col) {
+				const char* colName = dblock.getColumnName(col).c_str();
 				switch (dblock[col]->Type()->GetCode()) {
 					case Type::Code::Int8:
 						for (size_t row = 0; row < rowCount; ++row) {
-							add_next_index_long(rowCache[row], dblock[col]->As<ColumnInt8>()->At(row)); 
+							add_assoc_long(rowCache[row], colName, dblock[col]->As<ColumnInt8>()->At(row)); 
 						}
 						break;
 					case Type::Code::UInt8:
 						for (size_t row = 0; row < rowCount; ++row) {
-							add_next_index_long(rowCache[row], dblock[col]->As<ColumnUInt8>()->At(row)); 
+							add_assoc_long(rowCache[row], colName, dblock[col]->As<ColumnUInt8>()->At(row)); 
 						}
 						break;
 					case Type::Code::Int16:
 						for (size_t row = 0; row < rowCount; ++row) {
-							add_next_index_long(rowCache[row], dblock[col]->As<ColumnInt16>()->At(row)); 
+							add_assoc_long(rowCache[row], colName, dblock[col]->As<ColumnInt16>()->At(row)); 
 						}
 						break;
 					case Type::Code::UInt16:
 						for (size_t row = 0; row < rowCount; ++row) {
-							add_next_index_long(rowCache[row], dblock[col]->As<ColumnUInt16>()->At(row)); 
+							add_assoc_long(rowCache[row], colName, dblock[col]->As<ColumnUInt16>()->At(row)); 
 						}
 						break;
 					case Type::Code::Int32:
 						for (size_t row = 0; row < rowCount; ++row) {
-							add_next_index_long(rowCache[row], dblock[col]->As<ColumnInt32>()->At(row)); 
+							add_assoc_long(rowCache[row], colName, dblock[col]->As<ColumnInt32>()->At(row)); 
 						}
 						break;
 					case Type::Code::UInt32:
 						for (size_t row = 0; row < rowCount; ++row) {
-							add_next_index_long(rowCache[row], dblock[col]->As<ColumnUInt32>()->At(row)); 
+							add_assoc_long(rowCache[row], colName, dblock[col]->As<ColumnUInt32>()->At(row)); 
+						}
+						break;
+					case Type::Code::Float32:
+						for (size_t row = 0; row < rowCount; ++row) {
+							add_assoc_double(rowCache[row], colName, dblock[col]->As<ColumnFloat32>()->At(row)); 
+						}
+						break;
+					case Type::Code::Float64:
+						for (size_t row = 0; row < rowCount; ++row) {
+							add_assoc_double(rowCache[row], colName, dblock[col]->As<ColumnFloat64>()->At(row)); 
 						}
 						break;
 					case Type::Code::String:
 					case Type::Code::FixedString:
 						for (size_t row = 0; row < rowCount; ++row) {
-							add_next_index_stringl(rowCache[row], dblock[col]->As<ColumnString>()->At(row).c_str(), dblock[col]->As<ColumnString>()->At(row).length()); 
+							add_assoc_long(rowCache[row], colName, dblock[col]->As<ColumnString>()->At(row).c_str(), dblock[col]->As<ColumnString>()->At(row).length()); 
 						}
 						break;
 					default:
 						for (size_t row = 0; row < rowCount; ++row) {
-							add_next_index_null(rowCache[row]);	
+							add_assoc_null(rowCache[row], colName);	
 						}
 				}
 			}
