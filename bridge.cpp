@@ -55,10 +55,45 @@ size_t chc_select(void* instance, char* query, zend_fcall_info* fci, zend_fcall_
 			for (size_t col = 0; col < colCount; ++col) {
 				switch (dblock[col]->Type()->GetCode()) {
 					case Type::Code::Int8:
-						for (auto it = dblock[col]->As<ColumnInt8>()->begin(); it != dblock[col]->As<ColumnInt8>()->end(); ++it) {
-							
+						for (size_t row = 0; row < rowCount; ++row) {
+							add_next_index_long(rowCache[row], dblock[col]->As<ColumnInt8>()->At(row)); 
 						}
 						break;
+					case Type::Code::UInt8:
+						for (size_t row = 0; row < rowCount; ++row) {
+							add_next_index_long(rowCache[row], dblock[col]->As<ColumnUInt8>()->At(row)); 
+						}
+						break;
+					case Type::Code::Int16:
+						for (size_t row = 0; row < rowCount; ++row) {
+							add_next_index_long(rowCache[row], dblock[col]->As<ColumnInt16>()->At(row)); 
+						}
+						break;
+					case Type::Code::UInt16:
+						for (size_t row = 0; row < rowCount; ++row) {
+							add_next_index_long(rowCache[row], dblock[col]->As<ColumnUInt16>()->At(row)); 
+						}
+						break;
+					case Type::Code::Int32:
+						for (size_t row = 0; row < rowCount; ++row) {
+							add_next_index_long(rowCache[row], dblock[col]->As<ColumnInt32>()->At(row)); 
+						}
+						break;
+					case Type::Code::UInt32:
+						for (size_t row = 0; row < rowCount; ++row) {
+							add_next_index_long(rowCache[row], dblock[col]->As<ColumnUInt32>()->At(row)); 
+						}
+						break;
+					case Type::Code::String:
+					case Type::Code::FixedString:
+						for (size_t row = 0; row < rowCount; ++row) {
+							add_next_index_stringl(rowCache[row], dblock[col]->As<ColumnString>()->At(row).c_str(), dblock[col]->As<ColumnString>()->At(row).length()); 
+						}
+						break;
+					default:
+						for (size_t row = 0; row < rowCount; ++row) {
+							add_next_index_null(rowCache[row]);	
+						}
 				}
 			}
 			
