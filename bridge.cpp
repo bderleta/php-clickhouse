@@ -3,7 +3,7 @@
 using namespace std;
 using namespace clickhouse;
 
-void* chc_construct(char* host, char* username, char* password, char* default_database, long port) {
+void* chc_construct(char* host, char* username, char* password, char* default_database, long port, bool compression) {
 	try {
 		ClientOptions opts;
 		if (host) 
@@ -16,7 +16,8 @@ void* chc_construct(char* host, char* username, char* password, char* default_da
 			opts.SetDefaultDatabase(string(default_database));
 		if (port)
 			opts.SetPort(port);
-		opts.SetCompressionMethod(CompressionMethod::LZ4);
+		if (compression)
+			opts.SetCompressionMethod(CompressionMethod::LZ4);
 		Client* client = new Client(opts);
 		return (void*)client;
 	} catch (const std::system_error& e) {
