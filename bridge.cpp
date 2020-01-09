@@ -129,7 +129,7 @@ size_t chc_select(void* instance, char* query, zend_fcall_info* fci, zend_fcall_
 						}
 						break;
 					case Type::Code::Nullable:
-						
+						break;
 					default:
 						for (size_t row = 0; row < rowCount; ++row) {
 							add_assoc_null(rowCache[row], colName);	
