@@ -121,7 +121,7 @@ PHP_METHOD(ClickHouse, __construct)
 	zend_long port = 9000;
 	zend_bool port_null = false, compression = true;
 
-	ZEND_PARSE_PARAMETERS_START_EX(ZEND_PARSE_PARAMS_THROW, 0, 5)
+	ZEND_PARSE_PARAMETERS_START_EX(ZEND_PARSE_PARAMS_THROW, 0, 6)
 		Z_PARAM_OPTIONAL
 		Z_PARAM_STRING(host, host_len)
 		Z_PARAM_STRING(user, user_len)
