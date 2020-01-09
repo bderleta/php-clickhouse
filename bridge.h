@@ -14,6 +14,7 @@ void chc_destruct(void* instance);
 size_t chc_select(void* instance, char* query, zend_fcall_info* fci, zend_fcall_info_cache* fci_cache);
 void chc_execute(void* instance, char* query);
 void chc_ping(void* instance);
+void chc_reset_connection(void* instance);
 
 #endif /* BRIDGE_H */
 
