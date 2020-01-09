@@ -56,18 +56,22 @@ size_t chc_select(void* instance, char* query, zend_fcall_info* fci, zend_fcall_
 			/* Iterate over columns */
 			for (size_t col = 0; col < colCount; ++col) {
 				const char* colName = dblock.GetColumnName(col).c_str();
-#define STD_LONG(coln) for (size_t row = 0; row < rowCount; ++row) { \
-					add_assoc_long(rowCache[row], colName, coln->At(row)); \
+#define STD_LONG for (size_t row = 0; row < rowCount; ++row) { \
+					add_assoc_long(rowCache[row], colName, colCast->At(row)); \
 				} \
 				break;
 
 				switch (dblock[col]->Type()->GetCode()) {
 					case Type::Code::Int8:
-						auto colI8 = dblock[col]->As<ColumnInt8>();
-						STD_LONG(colI8)
+					{
+						auto colCast = dblock[col]->As<ColumnInt8>();
+						STD_LONG
+					}
 					case Type::Code::UInt8:
-						auto colUI8 = dblock[col]->As<ColumnUInt8>();
-						STD_LONG(colUI8)
+					{
+						auto colCast = dblock[col]->As<ColumnUInt8>();
+						STD_LONG
+					}
 					case Type::Code::Int16:
 						for (size_t row = 0; row < rowCount; ++row) {
 							add_assoc_long(rowCache[row], colName, dblock[col]->As<ColumnInt16>()->At(row)); 
