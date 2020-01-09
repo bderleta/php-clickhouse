@@ -21,10 +21,20 @@ Enable the extension in `php.ini` via `extension=clickhouse.so` and optionally r
 
 Extension exposes `ClickHouse` class.
 
-`Clickhouse::__construct(string $hostname, string $user = "default", string $password = "", ?string $default_database = null, int $port = 9000, bool $compression = true)`
+```ClickHouse::__construct(
+	?string $hostname = null, 
+	?string $user = null, 
+	?string $password = null, 
+	?string $default_database = null, 
+	?int $port = 9000, 
+	bool $compression = true
+)```
 
 Creates a ClickHouse instance, immediately connecting to the machine.
 
-`Clickhouse::select(string $query, callable $onBlockRead)`
+```ClickHouse::select(
+	string $query, 
+	callable $onBlockRead
+)```
 
 Invokes a SELECT query, calling `$onBlockRead(array $rows)` on every received block of data.
