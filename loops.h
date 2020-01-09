@@ -1,6 +1,7 @@
 #ifndef LOOPS_H
 #define LOOPS_H
 
+#define OVEROPTIMIZATION
 				
 #ifndef OVEROPTIMIZATION
 #define LOOP_AS_LONG for (size_t row = 0; row < rowCount; ++row) { \
