@@ -255,7 +255,7 @@ size_t chc_select(void* instance, char* query, zend_fcall_info* fci, zend_fcall_
 			fci->no_separation = 0;
 			ret = zend_call_function(fci, fci_cache);
 			i_zval_ptr_dtor(&block);
-		});
+		};
 		client->Select(string(query), onBlock);
 		return total;
 	} catch (const std::system_error& e) {
