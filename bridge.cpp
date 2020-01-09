@@ -258,7 +258,7 @@ size_t chc_select(void* instance, char* query, zend_fcall_info* fci, zend_fcall_
 				zval_ptr_dtor(rowCache[i]);
 				efree(rowCache[i]);
 			}
-			zval_ptr_dtor(&block);
+			i_zval_ptr_dtor(&block);
 			/* If not a boolean is returned, assume continue */
 			if ((Z_TYPE(result) != IS_TRUE) && (Z_TYPE(result) != IS_FALSE)) 
 				return true;
