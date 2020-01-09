@@ -41,7 +41,7 @@ size_t chc_select(void* instance, char* query, zend_fcall_info* fci, zend_fcall_
 			int ret;
 			size_t rowCount = dblock.GetRowCount(), colCount = dblock.GetColumnCount();
 			if (rowCount == 0)
-				return;
+				return true;
 			total += rowCount;
 			/* Build an array from resulting block */
 			array_init_size(&block, rowCount);
@@ -258,7 +258,7 @@ size_t chc_select(void* instance, char* query, zend_fcall_info* fci, zend_fcall_
 			if (Z_TYPE(result) != IS_BOOL) convert_to_boolean(&result);
 			return (Z_TYPE(result) == IS_TRUE);
 		};
-		client->SelectCancellable(string(query), onBlock);
+		client->SelectCancelable(string(query), onBlock);
 		return total;
 	} catch (const std::system_error& e) {
 		zend_throw_exception_ex(zend_exception_get_default(), 1 TSRMLS_CC, e.what());
