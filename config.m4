@@ -2,7 +2,7 @@ PHP_ARG_WITH(clickhouse, for clickhouse support,
 [  --with-clickhouse[=DIR]           Include ClickHouse support])
 
 PHP_ARG_ENABLE(overoptimization, whether to enable overoptimization,
-[  --enable-overoptimization        Enable miscellanous weird optimizations], no, no)
+[  --enable-overoptimization        Enable miscellaneous weird optimizations], no, no)
 
 
 if test "$PHP_CLICKHOUSE" != "no"; then
@@ -14,7 +14,7 @@ if test "$PHP_CLICKHOUSE" != "no"; then
   PHP_ADD_LIBRARY(stdc++,,CLICKHOUSE_SHARED_LIBADD)
 	
   if test "$PHP_OVEROPTIMIZATION" != "no"; then
-	AC_DEFINE(OVEROPTIMIZATION,1,[Enable miscellanous weird optimizations])
+	AC_DEFINE(OVEROPTIMIZATION,1,[Enable miscellaneous weird optimizations])
   fi
 
   if test "$PHP_CLICKHOUSE" = "yes"; then
