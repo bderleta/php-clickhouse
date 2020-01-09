@@ -18,6 +18,12 @@ $ make
 
 Enable the extension in `php.ini` via `extension=clickhouse.so` and optionally restart your webserver/FPM.
 
+## TODO
+
+- Support for Date / DateTime fields using strftime
+- Support for large numeric values non-natively supported by PHP (UInt64, Int128, Decimal) as strings
+- Support for Array, Tuple and the rest of complex fields 
+
 ## Usage
 
 Extension exposes `ClickHouse` class.
