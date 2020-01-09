@@ -56,17 +56,18 @@ size_t chc_select(void* instance, char* query, zend_fcall_info* fci, zend_fcall_
 			/* Iterate over columns */
 			for (size_t col = 0; col < colCount; ++col) {
 				const char* colName = dblock.GetColumnName(col).c_str();
+#define STD_LONG for (size_t row = 0; row < rowCount; ++row) { \
+					add_assoc_long(rowCache[row], colName, colA->At(row)); \
+				} \
+				break;
+
 				switch (dblock[col]->Type()->GetCode()) {
 					case Type::Code::Int8:
-						for (size_t row = 0; row < rowCount; ++row) {
-							add_assoc_long(rowCache[row], colName, dblock[col]->As<ColumnInt8>()->At(row)); 
-						}
-						break;
+						auto colA = dblock[col]->As<ColumnInt8>();
+						STD_LONG
 					case Type::Code::UInt8:
-						for (size_t row = 0; row < rowCount; ++row) {
-							add_assoc_long(rowCache[row], colName, dblock[col]->As<ColumnUInt8>()->At(row)); 
-						}
-						break;
+						auto colA = dblock[col]->As<ColumnUInt8>();
+						STD_LONG
 					case Type::Code::Int16:
 						for (size_t row = 0; row < rowCount; ++row) {
 							add_assoc_long(rowCache[row], colName, dblock[col]->As<ColumnInt16>()->At(row)); 
@@ -107,12 +108,28 @@ size_t chc_select(void* instance, char* query, zend_fcall_info* fci, zend_fcall_
 							add_assoc_double(rowCache[row], colName, dblock[col]->As<ColumnFloat64>()->At(row)); 
 						}
 						break;
+					case Type::Code::Enum8:
+						for (size_t row = 0; row < rowCount; ++row) {
+							add_assoc_stringl(rowCache[row], colName, dblock[col]->As<Enum8>()->NameAt(row).c_str(), dblock[col]->As<Enum8>()->NameAt(row).length()); 
+						}
+						break;
+					case Type::Code::Enum16:
+						for (size_t row = 0; row < rowCount; ++row) {
+							add_assoc_stringl(rowCache[row], colName, dblock[col]->As<Enum16>()->NameAt(row).c_str(), dblock[col]->As<Enum16>()->NameAt(row).length()); 
+						}
+						break;
 					case Type::Code::String:
-					case Type::Code::FixedString:
 						for (size_t row = 0; row < rowCount; ++row) {
 							add_assoc_stringl(rowCache[row], colName, dblock[col]->As<ColumnString>()->At(row).c_str(), dblock[col]->As<ColumnString>()->At(row).length()); 
 						}
 						break;
+					case Type::Code::FixedString:
+						for (size_t row = 0; row < rowCount; ++row) {
+							add_assoc_stringl(rowCache[row], colName, dblock[col]->As<ColumnFixedString>()->At(row).c_str(), dblock[col]->As<ColumnFixedString>()->At(row).length()); 
+						}
+						break;
+					case Type::Code::Nullable:
+						
 					default:
 						for (size_t row = 0; row < rowCount; ++row) {
 							add_assoc_null(rowCache[row], colName);	
