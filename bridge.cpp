@@ -146,11 +146,99 @@ size_t chc_select(void* instance, char* query, zend_fcall_info* fci, zend_fcall_
 						STD_STRING;
 					}
 					case Type::Code::Nullable:
-						break;
+					{
+						auto outerColCast = dblock[col]->As<ColumnNullable>();
+						for (size_t row = 0; row < rowCount; ++row) {
+							if (outerColCast->IsNull(row)) {
+								add_assoc_null(rowCache[row], colName);	
+							} else {
+								switch (dblock[col]->Type()->GetNestedType()->GetCode()) {
+									case Type::Code::Int8:
+									{
+										auto colCast = outerColCast->Nested()->As<ColumnInt8>();
+										STD_LONG;
+									}
+									case Type::Code::UInt8:
+									{
+										auto colCast = outerColCast->Nested()->As<ColumnUInt8>();
+										STD_LONG;
+									}
+									case Type::Code::Int16:
+									{
+										auto colCast = outerColCast->Nested()->As<ColumnInt16>();
+										STD_LONG;
+									}
+									case Type::Code::UInt16:
+									{
+										auto colCast = outerColCast->Nested()->As<ColumnUInt16>();
+										STD_LONG;
+									}
+									case Type::Code::Int32:
+									{
+										auto colCast = outerColCast->Nested()->As<ColumnInt32>();
+										STD_LONG;
+									}
+									case Type::Code::UInt32:
+									{
+										auto colCast = outerColCast->Nested()->As<ColumnUInt32>();
+										STD_LONG;
+									}
+									case Type::Code::Int64:
+									{
+										auto colCast = outerColCast->Nested()->As<ColumnInt64>();
+										STD_LONG;
+									}
+									case Type::Code::UInt64:
+									{
+										auto colCast = outerColCast->Nested()->As<ColumnUInt64>();
+										STD_LONG;
+									}
+									case Type::Code::Float32:
+									{
+										auto colCast = outerColCast->Nested()->As<ColumnFloat32>();
+										STD_LONG;
+									}
+									case Type::Code::Float64:
+									{
+										auto colCast = outerColCast->Nested()->As<ColumnFloat64>();
+										STD_LONG;
+									}
+									case Type::Code::Enum8:
+									{
+										auto colCast = outerColCast->Nested()->As<ColumnEnum8>();
+										STD_ENUM;
+									}
+									case Type::Code::Enum16:
+									{
+										auto colCast = outerColCast->Nested()->As<ColumnEnum16>();
+										STD_ENUM;
+									}
+									case Type::Code::String:
+									{
+										auto colCast = outerColCast->Nested()->As<ColumnString>();
+										STD_STRING;
+									}
+									case Type::Code::FixedString:
+									{
+										auto colCast = outerColCast->Nested()->As<ColumnFixedString>();
+										STD_STRING;
+									}
+									default:
+									{
+										for (size_t row = 0; row < rowCount; ++row) {
+											add_assoc_null(rowCache[row], colName);	
+										}
+									}
+								}
+							}
+						}
+					}
 					default:
+					{
 						for (size_t row = 0; row < rowCount; ++row) {
 							add_assoc_null(rowCache[row], colName);	
 						}
+					}
 				}
 			}	
 			/* Send to callback */
