@@ -17,6 +17,8 @@ PHP_MINFO_FUNCTION(clickhouse);
 
 PHP_METHOD(ClickHouse, __construct); 
 PHP_METHOD(ClickHouse, select); 
+PHP_METHOD(ClickHouse, execute); 
+PHP_METHOD(ClickHouse, ping); 
 
 }
 

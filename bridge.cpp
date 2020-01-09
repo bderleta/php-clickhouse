@@ -31,6 +31,28 @@ void chc_destruct(void* instance) {
 	delete client;
 }
 
+void chc_execute(void* instance, char* query) {
+	Client* client = (Client*)instance;
+	try {
+		client->Execute(string(query));
+	} catch (const std::system_error& e) {
+		zend_throw_exception_ex(zend_exception_get_default(), 1 TSRMLS_CC, e.what());
+	} catch (const clickhouse::ServerException& e) {
+		zend_throw_exception_ex(zend_exception_get_default(), 1 TSRMLS_CC, e.what());
+	}	
+}
+
+void chc_ping(void* instance) {
+	Client* client = (Client*)instance;
+	try {
+		client->Ping();
+	} catch (const std::system_error& e) {
+		zend_throw_exception_ex(zend_exception_get_default(), 1 TSRMLS_CC, e.what());
+	} catch (const clickhouse::ServerException& e) {
+		zend_throw_exception_ex(zend_exception_get_default(), 1 TSRMLS_CC, e.what());
+	}
+}
+
 size_t chc_select(void* instance, char* query, zend_fcall_info* fci, zend_fcall_info_cache* fci_cache) {
 	Client* client = (Client*)instance;
 	try {

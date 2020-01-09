@@ -25,12 +25,21 @@ ZEND_BEGIN_ARG_INFO_EX(arginfo_select, 0, 0, 0)
 	ZEND_ARG_INFO(0, query)
 	ZEND_ARG_INFO(0, callback)
 ZEND_END_ARG_INFO()	
+		
+ZEND_BEGIN_ARG_INFO_EX(arginfo_execute, 0, 0, 0)
+	ZEND_ARG_INFO(0, query)
+ZEND_END_ARG_INFO()	
+		
+ZEND_BEGIN_ARG_INFO_EX(arginfo_ping, 0, 0, 0)
+ZEND_END_ARG_INFO()	
 	
 zend_class_entry *clickhouse_ce;	
 
 zend_function_entry clickhouse_functions[] = {
     PHP_ME(ClickHouse, __construct, arginfo___construct, ZEND_ACC_PUBLIC)
 	PHP_ME(ClickHouse, select, arginfo_select, ZEND_ACC_PUBLIC)
+	PHP_ME(ClickHouse, execute, arginfo_execute, ZEND_ACC_PUBLIC)
+	PHP_ME(ClickHouse, ping, arginfo_ping, ZEND_ACC_PUBLIC)
     PHP_FE_END
 };
 
@@ -145,6 +154,39 @@ PHP_METHOD(ClickHouse, select)
 	total = chc_select(ch_object, query, &fci, &fci_cache);
 
 	RETURN_LONG(total);
+}
+
+PHP_METHOD(ClickHouse, execute) 
+{
+	char *query;
+	size_t query_len;
+	zval *zv_client;	
+	
+	ZEND_PARSE_PARAMETERS_START(1, 1)
+	        Z_PARAM_STRING(query, query_len)
+	ZEND_PARSE_PARAMETERS_END();	
+	
+	zv_client = zend_read_property(clickhouse_ce, getThis(), "connection", sizeof("connection") - 1, 1, NULL TSRMLS_CC);
+	ZEND_ASSERT(Z_TYPE_P(zv_client) == IS_RESOURCE);
+	void* ch_object = (void*)zend_fetch_resource(Z_RES_P(zv_client), "client", clickhouse_obj_res_num);
+	chc_execute(ch_object, query);
+	
+	RETURN_TRUE;
+}
+
+PHP_METHOD(ClickHouse, ping) 
+{
+	zval *zv_client;	
+	
+	ZEND_PARSE_PARAMETERS_START(0, 0)
+	ZEND_PARSE_PARAMETERS_END();	
+	
+	zv_client = zend_read_property(clickhouse_ce, getThis(), "connection", sizeof("connection") - 1, 1, NULL TSRMLS_CC);
+	ZEND_ASSERT(Z_TYPE_P(zv_client) == IS_RESOURCE);
+	void* ch_object = (void*)zend_fetch_resource(Z_RES_P(zv_client), "client", clickhouse_obj_res_num);
+	chc_ping(ch_object);
+
+	RETURN_TRUE;
 }
 
 }
