@@ -106,7 +106,11 @@ PHP_MINFO_FUNCTION(clickhouse)
     php_info_print_table_header(2, "ClickHouse support", "enabled");
     php_info_print_table_row(2, "ClickHouse extension version", PHP_CLICKHOUSE_VERSION);
     php_info_print_table_row(2, "Build date", __DATE__);
-
+#ifdef OVEROPTIMIZATION
+    php_info_print_table_row(2, "Over-optimization", "enabled");
+#else
+	php_info_print_table_row(2, "Over-optimization", "disabled");
+#endif
     php_info_print_table_end();
 
     php_info_print_table_start();

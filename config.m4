@@ -1,6 +1,9 @@
-PHP_ARG_WITH(clickhouse,for clickhouse support,
-dnl Make sure that the comment is aligned:
+PHP_ARG_WITH(clickhouse, for clickhouse support,
 [  --with-clickhouse[=DIR]           Include ClickHouse support])
+
+PHP_ARG_ENABLE(overoptimization, whether to enable overoptimization,
+[  --enable-overoptimization        Enable miscellanous weird optimizations], no, no)
+
 
 if test "$PHP_CLICKHOUSE" != "no"; then
   CXXFLAGS="-std=c++14"
@@ -10,6 +13,10 @@ if test "$PHP_CLICKHOUSE" != "no"; then
   PHP_SUBST(CLICKHOUSE_SHARED_LIBADD)
   PHP_ADD_LIBRARY(stdc++,,CLICKHOUSE_SHARED_LIBADD)
 	
+  if test "$PHP_OVEROPTIMIZATION" != "no"; then
+	AC_DEFINE(OVEROPTIMIZATION,1,[Enable miscellanous weird optimizations])
+  fi
+
   if test "$PHP_CLICKHOUSE" = "yes"; then
     PHP_CHECK_LIBRARY(clickhouse-cpp-lib, _ZN10clickhouse6Client4PingEv,
     [],[
