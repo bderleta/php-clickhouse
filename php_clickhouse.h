@@ -1,7 +1,7 @@
 #ifndef PHP_CLICKHOUSE_H
 #define PHP_CLICKHOUSE_H 1
 
-#define PHP_CLICKHOUSE_VERSION "20.1.7"
+#define PHP_CLICKHOUSE_VERSION "0.1"
 #define PHP_CLICKHOUSE_EXTNAME "clickhouse"
 
 extern "C" {
