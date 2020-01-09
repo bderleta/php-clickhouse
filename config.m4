@@ -1,5 +1,5 @@
 PHP_ARG_WITH(clickhouse, for clickhouse support,
-[  --with-clickhouse=DIR   Include ClickHouse support])
+[  --with-clickhouse=DIR   Path to libclickhouse-cpp-lib])
 
 PHP_ARG_ENABLE(overoptimization, whether to enable overoptimization,
 [  --enable-overoptimization 
