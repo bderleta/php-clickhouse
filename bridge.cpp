@@ -152,7 +152,7 @@ size_t chc_select(void* instance, char* query, zend_fcall_info* fci, zend_fcall_
 							if (outerColCast->IsNull(row)) {
 								add_assoc_null(rowCache[row], colName);	
 							} else {
-								switch (dblock[col]->Type()->GetNestedType()->GetCode()) {
+								switch (outerColCast->Type()->GetNestedType()->GetCode()) {
 									case Type::Code::Int8:
 									{
 										auto colCast = outerColCast->Nested()->As<ColumnInt8>();
