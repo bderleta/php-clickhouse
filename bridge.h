@@ -6,6 +6,7 @@
 #include <system_error>
 
 #include "php.h"
+#include "zend_types.h"
 #include "Zend/zend_exceptions.h"
 
 void* chc_construct(char* host = NULL, char* username = NULL, char* password = NULL, char* default_database = NULL, long port = 9000, bool compression = true);
