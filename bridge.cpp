@@ -1,4 +1,5 @@
 #include "bridge.h"
+#include "loops.h"
 
 using namespace std;
 using namespace clickhouse;
@@ -87,56 +88,9 @@ size_t chc_select(void* instance, char* query, zend_fcall_info* fci, zend_fcall_
 			
 			/* Iterate over columns */
 			for (size_t col = 0; col < colCount; ++col) {
+#ifndef OVEROPTIMIZATION
 				const char* colName = dblock.GetColumnName(col).c_str();
-				
-#define LOOP_AS_LONG for (size_t row = 0; row < rowCount; ++row) { \
-					add_assoc_long(&rows[row], colName, colCast->At(row)); \
-				} \
-				break
-#define LOOP_AS_DOUBLE for (size_t row = 0; row < rowCount; ++row) { \
-					add_assoc_double(&rows[row], colName, colCast->At(row)); \
-				} \
-				break
-#define LOOP_AS_ENUM for (size_t row = 0; row < rowCount; ++row) { \
-					add_assoc_stringl(&rows[row], colName, colCast->NameAt(row).c_str(), colCast->NameAt(row).length()); \
-				} \
-				break
-#define LOOP_AS_STRING for (size_t row = 0; row < rowCount; ++row) { \
-					add_assoc_stringl(&rows[row], colName, colCast->At(row).c_str(), colCast->At(row).length()); \
-				} \
-				break
-#define LOOP_NULLABLE_AS_LONG for (size_t row = 0; row < rowCount; ++row) { \
-				if (outerColCast->IsNull(row)) \
-					add_assoc_null(&rows[row], colName); \
-				else \
-					add_assoc_long(&rows[row], colName, colCast->At(row)); \
-				} \
-				break
-#define LOOP_NULLABLE_AS_DOUBLE for (size_t row = 0; row < rowCount; ++row) { \
-				if (outerColCast->IsNull(row)) \
-					add_assoc_null(&rows[row], colName); \
-				else \
-					add_assoc_double(&rows[row], colName, colCast->At(row)); \
-				} \
-				break
-#define LOOP_NULLABLE_AS_ENUM for (size_t row = 0; row < rowCount; ++row) { \
-				if (outerColCast->IsNull(row)) \
-					add_assoc_null(&rows[row], colName); \
-				else \
-					add_assoc_stringl(&rows[row], colName, colCast->NameAt(row).c_str(), colCast->NameAt(row).length()); \
-				} \
-				break
-#define LOOP_NULLABLE_AS_STRING for (size_t row = 0; row < rowCount; ++row) { \
-				if (outerColCast->IsNull(row)) \
-					add_assoc_null(&rows[row], colName); \
-				else \
-					add_assoc_stringl(&rows[row], colName, colCast->At(row).c_str(), colCast->At(row).length()); \
-				} \
-				break
-#define LOOP_AS_NULL for (size_t row = 0; row < rowCount; ++row) { \
-					add_assoc_null(&rows[row], colName); \
-				} \
-				break
+#endif 
 						
 				/**
 				 * TODO: Support for DATE / DATETIME ?
