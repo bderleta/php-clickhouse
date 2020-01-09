@@ -47,7 +47,7 @@ size_t chc_select(void* instance, char* query, zend_fcall_info* fci, zend_fcall_
 			array_init_size(&block, rowCount);
 			zval* rowCache[rowCount];
 			for (size_t i = 0; i < rowCount; ++i) {
-				zval* row = emalloc(sizeof(zval));
+				zval* row = (zval*)emalloc(sizeof(zval));
 				array_init_size(row, colCount);
 				add_next_index_zval(&block, row);
 				rowCache[i] = row;
