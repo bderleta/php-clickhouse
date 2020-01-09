@@ -3,7 +3,7 @@ PHP_ARG_WITH(clickhouse, for clickhouse support,
 
 PHP_ARG_ENABLE(overoptimization, whether to enable overoptimization,
 [  --enable-overoptimization 
-                          Enable miscellaneous weird optimizations], no, no)
+                          Enable miscellaneous weird optimizations default=no], no, no)
 
 
 if test "$PHP_CLICKHOUSE" != "no"; then
