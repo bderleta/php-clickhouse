@@ -38,7 +38,8 @@ Creates a ClickHouse instance, immediately connecting to the machine.
 ClickHouse::select(
 	string $query, 
 	callable $onBlockRead
-)
+) : int
 ```
 
 Invokes a SELECT query, calling `$onBlockRead(array $rows)` on every received block of data. If callback returns `FALSE`, fetching stops and no further callbacks are made.
+Returns total number of rows received.
