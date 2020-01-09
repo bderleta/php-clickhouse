@@ -37,21 +37,22 @@ size_t chc_select(void* instance, char* query, zend_fcall_info* fci, zend_fcall_
 		size_t total = 0;
 		auto onBlock = [&fci, &fci_cache, &total] (const Block& dblock) -> bool
 		{
-			zval block, result;
+			zval result, *block;
 			int ret;
 			size_t rowCount = dblock.GetRowCount(), colCount = dblock.GetColumnCount();
 			if (rowCount == 0)
 				return true;
 			total += rowCount;
 			/* Build an array from resulting block */
-			array_init_size(&block, rowCount);
+			MAKE_STD_ZVAL(block);
+			array_init_size(block, rowCount);
 			zval* rowCache[rowCount];
 			for (size_t i = 0; i < rowCount; ++i) {
-				//zval* row = (zval*)emalloc(sizeof(zval));
-				zval row;
-				array_init_size(&row, colCount);
-				add_next_index_zval(&block, &row);
-				rowCache[i] = &row;
+				zval* row;
+				MAKE_STD_ZVAL(row);
+				array_init_size(row, colCount);
+				add_next_index_zval(block, row);
+				rowCache[i] = row;
 			}
 			
 			/* Iterate over columns */
@@ -252,14 +253,11 @@ size_t chc_select(void* instance, char* query, zend_fcall_info* fci, zend_fcall_
 			/* Send to callback */
 			fci->retval = &result;
 			fci->param_count = 1;
-			fci->params = &block;
+			fci->params = block;
 			fci->no_separation = 0;
 			ret = zend_call_function(fci, fci_cache);
-			//for (size_t i = 0; i < rowCount; ++i) {
-			//	zval_ptr_dtor(rowCache[i]);
-			//	efree(rowCache[i]);
-			//}
-			i_zval_ptr_dtor(&block);
+
+			zval_ptr_dtor(block);
 			/* If not a boolean is returned, assume continue */
 			if ((Z_TYPE(result) != IS_TRUE) && (Z_TYPE(result) != IS_FALSE)) 
 				return true;
