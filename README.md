@@ -41,4 +41,4 @@ ClickHouse::select(
 )
 ```
 
-Invokes a SELECT query, calling `$onBlockRead(array $rows)` on every received block of data.
+Invokes a SELECT query, calling `$onBlockRead(array $rows)` on every received block of data. If callback returns `FALSE`, fetching stops and no further callbacks are made.
