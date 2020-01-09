@@ -1,5 +1,6 @@
 # php-clickhouse
 Implementation of ClickHouse C++ client as a PHP 7+ extension. Does not cover data inserting functionality yet.
+
 The main goal is to achieve better performance than pure-PHP clients, by using binary protocol, and better memory management. It has been tested
 to stream millions of rows for processing, while utilizing less than 16 MB of process memory. It is also around 2-3x faster than streaming resultsets over 
 ClickHouse's HTTP protocol. Any non-SELECT query may be still performed using Select/Execute calls.
