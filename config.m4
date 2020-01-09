@@ -3,7 +3,7 @@ dnl Make sure that the comment is aligned:
 [  --with-clickhouse[=DIR]           Include ClickHouse support])
 
 if test "$PHP_CLICKHOUSE" != "no"; then
-  CXXFLAGS="-std=c++11"
+  CXXFLAGS="-std=c++14"
   PHP_REQUIRE_CXX()
   AC_LANG_CPLUSPLUS
 
