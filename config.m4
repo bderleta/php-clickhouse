@@ -1,6 +1,6 @@
 PHP_ARG_WITH(clickhouse,for clickhouse support,
 dnl Make sure that the comment is aligned:
-[  --enable-clickhouse               Include ClickHouse support])
+[  --with-clickhouse[=DIR]           Include ClickHouse support])
 
 if test "$PHP_CLICKHOUSE" != "no"; then
   CXXFLAGS="-std=c++11"
