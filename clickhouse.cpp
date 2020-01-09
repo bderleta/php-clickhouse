@@ -21,12 +21,12 @@ ZEND_BEGIN_ARG_INFO_EX(arginfo___construct, 0, 0, 0)
 	ZEND_ARG_INFO(0, compression)
 ZEND_END_ARG_INFO()	
 		
-ZEND_BEGIN_ARG_INFO_EX(arginfo_select, 0, 0, 0)
+ZEND_BEGIN_ARG_INFO_EX(arginfo_select, 0, 0, 2)
 	ZEND_ARG_INFO(0, query)
 	ZEND_ARG_INFO(0, callback)
 ZEND_END_ARG_INFO()	
 		
-ZEND_BEGIN_ARG_INFO_EX(arginfo_execute, 0, 0, 0)
+ZEND_BEGIN_ARG_INFO_EX(arginfo_execute, 0, 0, 1)
 	ZEND_ARG_INFO(0, query)
 ZEND_END_ARG_INFO()	
 		
