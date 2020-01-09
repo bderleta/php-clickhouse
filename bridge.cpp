@@ -251,15 +251,6 @@ size_t chc_select(void* instance, char* query, zend_fcall_info* fci, zend_fcall_
 						LOOP_AS_NULL;
 					}
 				}
-#undef LOOP_AS_LONG
-#undef LOOP_AS_DOUBLE
-#undef LOOP_AS_ENUM
-#undef LOOP_AS_STRING
-#undef LOOP_NULLABLE_AS_LONG
-#undef LOOP_NULLABLE_AS_DOUBLE
-#undef LOOP_NULLABLE_AS_ENUM
-#undef LOOP_NULLABLE_AS_STRING				
-#undef LOOP_AS_NULL
 			}	
 			/* Send to callback */
 			fci->retval = &result;
