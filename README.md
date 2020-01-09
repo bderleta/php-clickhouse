@@ -4,6 +4,7 @@ Implementation of ClickHouse C++ client as a PHP 7+ extension
 ## Prerequisites
 
 - PHP 7.3
+- C++14 capable toolset
 - Requires [clickhouse-cpp-lib](https://github.com/ClickHouse/clickhouse-cpp/) built and installed
 
 ## Building
