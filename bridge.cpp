@@ -134,8 +134,9 @@ size_t chc_select(void* instance, char* query, zend_fcall_info* fci, zend_fcall_
 				} \
 				break
 #define LOOP_AS_NULL for (size_t row = 0; row < rowCount; ++row) { \
-					add_assoc_null(&rows[row], colName);	
-				}			
+					add_assoc_null(&rows[row], colName); \
+				} \
+				break
 						
 				/**
 				 * TODO: Support for DATE / DATETIME ?
