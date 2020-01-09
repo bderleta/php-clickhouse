@@ -35,7 +35,7 @@ size_t chc_select(void* instance, char* query, zend_fcall_info* fci, zend_fcall_
 	Client* client = (Client*)instance;
 	try {
 		size_t total = 0;
-		client->Select(string(query), [&fci, &fci_cache, &total] (const Block& dblock)
+		auto onBlock = [&fci, &fci_cache, &total] (const Block& dblock)
 		{
 			zval block, result;
 			int ret;
@@ -256,6 +256,7 @@ size_t chc_select(void* instance, char* query, zend_fcall_info* fci, zend_fcall_
 			ret = zend_call_function(fci, fci_cache);
 			i_zval_ptr_dtor(&block);
 		});
+		client->Select(string(query), onBlock);
 		return total;
 	} catch (const std::system_error& e) {
 		zend_throw_exception_ex(zend_exception_get_default(), 1 TSRMLS_CC, e.what());
