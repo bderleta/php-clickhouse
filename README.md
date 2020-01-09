@@ -43,3 +43,25 @@ ClickHouse::select(
 
 Invokes a SELECT query, calling `$onBlockRead(array $rows)` on every received block of data. If callback returns `FALSE`, fetching stops and no further callbacks are made.
 Returns total number of rows received.
+
+```
+ClickHouse::execute(
+	string $query
+) : bool
+```
+
+Invokes a query. Returns `TRUE` or throws exception on error.
+
+```
+ClickHouse::ping(
+) : bool
+```
+
+Pings the server. Returns `TRUE` or throws exception on error.
+
+```
+ClickHouse::resetConnection(
+) : bool
+```
+
+Resets the connection. Returns `TRUE` or throws exception on error.
