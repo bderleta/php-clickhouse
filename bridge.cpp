@@ -56,82 +56,95 @@ size_t chc_select(void* instance, char* query, zend_fcall_info* fci, zend_fcall_
 			/* Iterate over columns */
 			for (size_t col = 0; col < colCount; ++col) {
 				const char* colName = dblock.GetColumnName(col).c_str();
+				
 #define STD_LONG for (size_t row = 0; row < rowCount; ++row) { \
 					add_assoc_long(rowCache[row], colName, colCast->At(row)); \
 				} \
-				break;
-
+				break
+#define STD_DOUBLE for (size_t row = 0; row < rowCount; ++row) { \
+					add_assoc_double(rowCache[row], colName, colCast->At(row)); \
+				} \
+				break
+#define STD_ENUM for (size_t row = 0; row < rowCount; ++row) { \
+					add_assoc_stringl(rowCache[row], colName, colCast->NameAt(row).c_str(), colCast->NameAt(row).length()); \
+				} \
+				break
+#define STD_STRING for (size_t row = 0; row < rowCount; ++row) { \
+					add_assoc_stringl(rowCache[row], colName, colCast->At(row).c_str(), colCast->At(row).length()); \
+				} \
+				break
+				
 				switch (dblock[col]->Type()->GetCode()) {
 					case Type::Code::Int8:
 					{
 						auto colCast = dblock[col]->As<ColumnInt8>();
-						STD_LONG
+						STD_LONG;
 					}
 					case Type::Code::UInt8:
 					{
 						auto colCast = dblock[col]->As<ColumnUInt8>();
-						STD_LONG
+						STD_LONG;
 					}
 					case Type::Code::Int16:
-						for (size_t row = 0; row < rowCount; ++row) {
-							add_assoc_long(rowCache[row], colName, dblock[col]->As<ColumnInt16>()->At(row)); 
-						}
-						break;
+					{
+						auto colCast = dblock[col]->As<ColumnInt16>();
+						STD_LONG;
+					}
 					case Type::Code::UInt16:
-						for (size_t row = 0; row < rowCount; ++row) {
-							add_assoc_long(rowCache[row], colName, dblock[col]->As<ColumnUInt16>()->At(row)); 
-						}
-						break;
+					{
+						auto colCast = dblock[col]->As<ColumnUInt16>();
+						STD_LONG;
+					}
 					case Type::Code::Int32:
-						for (size_t row = 0; row < rowCount; ++row) {
-							add_assoc_long(rowCache[row], colName, dblock[col]->As<ColumnInt32>()->At(row)); 
-						}
-						break;
+					{
+						auto colCast = dblock[col]->As<ColumnInt32>();
+						STD_LONG;
+					}
 					case Type::Code::UInt32:
-						for (size_t row = 0; row < rowCount; ++row) {
-							add_assoc_long(rowCache[row], colName, dblock[col]->As<ColumnUInt32>()->At(row)); 
-						}
-						break;
+					{
+						auto colCast = dblock[col]->As<ColumnUInt32>();
+						STD_LONG;
+					}
 					case Type::Code::Int64:
-						for (size_t row = 0; row < rowCount; ++row) {
-							add_assoc_long(rowCache[row], colName, dblock[col]->As<ColumnInt64>()->At(row)); 
-						}
-						break;
+					{
+						auto colCast = dblock[col]->As<ColumnInt64>();
+						STD_LONG;
+					}
 					case Type::Code::UInt64:
-						for (size_t row = 0; row < rowCount; ++row) {
-							add_assoc_long(rowCache[row], colName, dblock[col]->As<ColumnUInt64>()->At(row)); 
-						}
-						break;
+					{
+						auto colCast = dblock[col]->As<ColumnUInt64>();
+						STD_LONG;
+					}
 					case Type::Code::Float32:
-						for (size_t row = 0; row < rowCount; ++row) {
-							add_assoc_double(rowCache[row], colName, dblock[col]->As<ColumnFloat32>()->At(row)); 
-						}
-						break;
+					{
+						auto colCast = dblock[col]->As<ColumnFloat32>();
+						STD_LONG;
+					}
 					case Type::Code::Float64:
-						for (size_t row = 0; row < rowCount; ++row) {
-							add_assoc_double(rowCache[row], colName, dblock[col]->As<ColumnFloat64>()->At(row)); 
-						}
-						break;
+					{
+						auto colCast = dblock[col]->As<ColumnFloat64>();
+						STD_LONG;
+					}
 					case Type::Code::Enum8:
-						for (size_t row = 0; row < rowCount; ++row) {
-							add_assoc_stringl(rowCache[row], colName, dblock[col]->As<ColumnEnum8>()->NameAt(row).c_str(), dblock[col]->As<ColumnEnum8>()->NameAt(row).length()); 
-						}
-						break;
+					{
+						auto colCast = dblock[col]->As<ColumnEnum8>();
+						STD_ENUM;
+					}
 					case Type::Code::Enum16:
-						for (size_t row = 0; row < rowCount; ++row) {
-							add_assoc_stringl(rowCache[row], colName, dblock[col]->As<ColumnEnum16>()->NameAt(row).c_str(), dblock[col]->As<ColumnEnum16>()->NameAt(row).length()); 
-						}
-						break;
+					{
+						auto colCast = dblock[col]->As<ColumnEnum16>();
+						STD_ENUM;
+					}
 					case Type::Code::String:
-						for (size_t row = 0; row < rowCount; ++row) {
-							add_assoc_stringl(rowCache[row], colName, dblock[col]->As<ColumnString>()->At(row).c_str(), dblock[col]->As<ColumnString>()->At(row).length()); 
-						}
-						break;
+					{
+						auto colCast = dblock[col]->As<ColumnString>();
+						STD_STRING;
+					}
 					case Type::Code::FixedString:
-						for (size_t row = 0; row < rowCount; ++row) {
-							add_assoc_stringl(rowCache[row], colName, dblock[col]->As<ColumnFixedString>()->At(row).c_str(), dblock[col]->As<ColumnFixedString>()->At(row).length()); 
-						}
-						break;
+					{
+						auto colCast = dblock[col]->As<ColumnFixedString>();
+						STD_STRING;
+					}
 					case Type::Code::Nullable:
 						break;
 					default:
