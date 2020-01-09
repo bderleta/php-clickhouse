@@ -37,22 +37,18 @@ size_t chc_select(void* instance, char* query, zend_fcall_info* fci, zend_fcall_
 		size_t total = 0;
 		auto onBlock = [&fci, &fci_cache, &total] (const Block& dblock) -> bool
 		{
-			zval result, *block;
+			zval result, block;
 			int ret;
 			size_t rowCount = dblock.GetRowCount(), colCount = dblock.GetColumnCount();
 			if (rowCount == 0)
 				return true;
 			total += rowCount;
 			/* Build an array from resulting block */
-			MAKE_STD_ZVAL(block);
-			array_init_size(block, rowCount);
-			zval* rowCache[rowCount];
+			array_init_size(&block, rowCount);
+			zval rows[rowCount];
 			for (size_t i = 0; i < rowCount; ++i) {
-				zval* row;
-				MAKE_STD_ZVAL(row);
-				array_init_size(row, colCount);
-				add_next_index_zval(block, row);
-				rowCache[i] = row;
+				array_init_size(&rows[i], colCount);
+				add_next_index_zval(&block, &rows[i]);
 			}
 			
 			/* Iterate over columns */
@@ -60,19 +56,19 @@ size_t chc_select(void* instance, char* query, zend_fcall_info* fci, zend_fcall_
 				const char* colName = dblock.GetColumnName(col).c_str();
 				
 #define LOOP_AS_LONG for (size_t row = 0; row < rowCount; ++row) { \
-					add_assoc_long(rowCache[row], colName, colCast->At(row)); \
+					add_assoc_long(&rows[row], colName, colCast->At(row)); \
 				} \
 				break
 #define LOOP_AS_DOUBLE for (size_t row = 0; row < rowCount; ++row) { \
-					add_assoc_double(rowCache[row], colName, colCast->At(row)); \
+					add_assoc_double(&rows[row], colName, colCast->At(row)); \
 				} \
 				break
 #define LOOP_AS_ENUM for (size_t row = 0; row < rowCount; ++row) { \
-					add_assoc_stringl(rowCache[row], colName, colCast->NameAt(row).c_str(), colCast->NameAt(row).length()); \
+					add_assoc_stringl(&rows[row], colName, colCast->NameAt(row).c_str(), colCast->NameAt(row).length()); \
 				} \
 				break
 #define LOOP_AS_STRING for (size_t row = 0; row < rowCount; ++row) { \
-					add_assoc_stringl(rowCache[row], colName, colCast->At(row).c_str(), colCast->At(row).length()); \
+					add_assoc_stringl(&rows[row], colName, colCast->At(row).c_str(), colCast->At(row).length()); \
 				} \
 				break
 				
@@ -231,7 +227,7 @@ size_t chc_select(void* instance, char* query, zend_fcall_info* fci, zend_fcall_
 									default:
 									{
 										for (size_t row = 0; row < rowCount; ++row) {
-											add_assoc_null(rowCache[row], colName);	
+											add_assoc_null(&rows[row], colName);	
 										}
 									}
 								}
@@ -241,7 +237,7 @@ size_t chc_select(void* instance, char* query, zend_fcall_info* fci, zend_fcall_
 					default:
 					{
 						for (size_t row = 0; row < rowCount; ++row) {
-							add_assoc_null(rowCache[row], colName);	
+							add_assoc_null(&rows[row], colName);	
 						}
 					}
 				}
