@@ -56,18 +56,18 @@ size_t chc_select(void* instance, char* query, zend_fcall_info* fci, zend_fcall_
 			/* Iterate over columns */
 			for (size_t col = 0; col < colCount; ++col) {
 				const char* colName = dblock.GetColumnName(col).c_str();
-#define STD_LONG for (size_t row = 0; row < rowCount; ++row) { \
-					add_assoc_long(rowCache[row], colName, colA->At(row)); \
+#define STD_LONG(coln) for (size_t row = 0; row < rowCount; ++row) { \
+					add_assoc_long(rowCache[row], colName, coln->At(row)); \
 				} \
 				break;
 
 				switch (dblock[col]->Type()->GetCode()) {
 					case Type::Code::Int8:
-						auto colA = dblock[col]->As<ColumnInt8>();
-						STD_LONG
+						auto colI8 = dblock[col]->As<ColumnInt8>();
+						STD_LONG(colI8)
 					case Type::Code::UInt8:
-						auto colA = dblock[col]->As<ColumnUInt8>();
-						STD_LONG
+						auto colUI8 = dblock[col]->As<ColumnUInt8>();
+						STD_LONG(colUI8)
 					case Type::Code::Int16:
 						for (size_t row = 0; row < rowCount; ++row) {
 							add_assoc_long(rowCache[row], colName, dblock[col]->As<ColumnInt16>()->At(row)); 
@@ -110,12 +110,12 @@ size_t chc_select(void* instance, char* query, zend_fcall_info* fci, zend_fcall_
 						break;
 					case Type::Code::Enum8:
 						for (size_t row = 0; row < rowCount; ++row) {
-							add_assoc_stringl(rowCache[row], colName, dblock[col]->As<Enum8>()->NameAt(row).c_str(), dblock[col]->As<Enum8>()->NameAt(row).length()); 
+							add_assoc_stringl(rowCache[row], colName, dblock[col]->As<ColumnEnum8>()->NameAt(row).c_str(), dblock[col]->As<ColumnEnum8>()->NameAt(row).length()); 
 						}
 						break;
 					case Type::Code::Enum16:
 						for (size_t row = 0; row < rowCount; ++row) {
-							add_assoc_stringl(rowCache[row], colName, dblock[col]->As<Enum16>()->NameAt(row).c_str(), dblock[col]->As<Enum16>()->NameAt(row).length()); 
+							add_assoc_stringl(rowCache[row], colName, dblock[col]->As<ColumnEnum16>()->NameAt(row).c_str(), dblock[col]->As<ColumnEnum16>()->NameAt(row).length()); 
 						}
 						break;
 					case Type::Code::String:
