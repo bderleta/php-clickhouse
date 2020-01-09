@@ -57,93 +57,96 @@ size_t chc_select(void* instance, char* query, zend_fcall_info* fci, zend_fcall_
 			for (size_t col = 0; col < colCount; ++col) {
 				const char* colName = dblock.GetColumnName(col).c_str();
 				
-#define STD_LONG for (size_t row = 0; row < rowCount; ++row) { \
+#define LOOP_AS_LONG for (size_t row = 0; row < rowCount; ++row) { \
 					add_assoc_long(rowCache[row], colName, colCast->At(row)); \
 				} \
 				break
-#define STD_DOUBLE for (size_t row = 0; row < rowCount; ++row) { \
+#define LOOP_AS_DOUBLE for (size_t row = 0; row < rowCount; ++row) { \
 					add_assoc_double(rowCache[row], colName, colCast->At(row)); \
 				} \
 				break
-#define STD_ENUM for (size_t row = 0; row < rowCount; ++row) { \
+#define LOOP_AS_ENUM for (size_t row = 0; row < rowCount; ++row) { \
 					add_assoc_stringl(rowCache[row], colName, colCast->NameAt(row).c_str(), colCast->NameAt(row).length()); \
 				} \
 				break
-#define STD_STRING for (size_t row = 0; row < rowCount; ++row) { \
+#define LOOP_AS_STRING for (size_t row = 0; row < rowCount; ++row) { \
 					add_assoc_stringl(rowCache[row], colName, colCast->At(row).c_str(), colCast->At(row).length()); \
 				} \
 				break
 				
+				/**
+				 * TODO: Support for DATE / DATETIME ?
+				 */
 				switch (dblock[col]->Type()->GetCode()) {
 					case Type::Code::Int8:
 					{
 						auto colCast = dblock[col]->As<ColumnInt8>();
-						STD_LONG;
+						LOOP_AS_LONG;
 					}
 					case Type::Code::UInt8:
 					{
 						auto colCast = dblock[col]->As<ColumnUInt8>();
-						STD_LONG;
+						LOOP_AS_LONG;
 					}
 					case Type::Code::Int16:
 					{
 						auto colCast = dblock[col]->As<ColumnInt16>();
-						STD_LONG;
+						LOOP_AS_LONG;
 					}
 					case Type::Code::UInt16:
 					{
 						auto colCast = dblock[col]->As<ColumnUInt16>();
-						STD_LONG;
+						LOOP_AS_LONG;
 					}
 					case Type::Code::Int32:
 					{
 						auto colCast = dblock[col]->As<ColumnInt32>();
-						STD_LONG;
+						LOOP_AS_LONG;
 					}
 					case Type::Code::UInt32:
 					{
 						auto colCast = dblock[col]->As<ColumnUInt32>();
-						STD_LONG;
+						LOOP_AS_LONG;
 					}
 					case Type::Code::Int64:
 					{
 						auto colCast = dblock[col]->As<ColumnInt64>();
-						STD_LONG;
+						LOOP_AS_LONG;
 					}
 					case Type::Code::UInt64:
 					{
 						auto colCast = dblock[col]->As<ColumnUInt64>();
-						STD_LONG;
+						LOOP_AS_LONG;
 					}
 					case Type::Code::Float32:
 					{
 						auto colCast = dblock[col]->As<ColumnFloat32>();
-						STD_LONG;
+						LOOP_AS_LONG;
 					}
 					case Type::Code::Float64:
 					{
 						auto colCast = dblock[col]->As<ColumnFloat64>();
-						STD_LONG;
+						LOOP_AS_LONG;
 					}
 					case Type::Code::Enum8:
 					{
 						auto colCast = dblock[col]->As<ColumnEnum8>();
-						STD_ENUM;
+						LOOP_AS_ENUM;
 					}
 					case Type::Code::Enum16:
 					{
 						auto colCast = dblock[col]->As<ColumnEnum16>();
-						STD_ENUM;
+						LOOP_AS_ENUM;
 					}
 					case Type::Code::String:
 					{
 						auto colCast = dblock[col]->As<ColumnString>();
-						STD_STRING;
+						LOOP_AS_STRING;
 					}
 					case Type::Code::FixedString:
 					{
 						auto colCast = dblock[col]->As<ColumnFixedString>();
-						STD_STRING;
+						LOOP_AS_STRING;
 					}
 					case Type::Code::Nullable:
 					{
@@ -156,72 +159,72 @@ size_t chc_select(void* instance, char* query, zend_fcall_info* fci, zend_fcall_
 									case Type::Code::Int8:
 									{
 										auto colCast = outerColCast->Nested()->As<ColumnInt8>();
-										STD_LONG;
+										LOOP_AS_LONG;
 									}
 									case Type::Code::UInt8:
 									{
 										auto colCast = outerColCast->Nested()->As<ColumnUInt8>();
-										STD_LONG;
+										LOOP_AS_LONG;
 									}
 									case Type::Code::Int16:
 									{
 										auto colCast = outerColCast->Nested()->As<ColumnInt16>();
-										STD_LONG;
+										LOOP_AS_LONG;
 									}
 									case Type::Code::UInt16:
 									{
 										auto colCast = outerColCast->Nested()->As<ColumnUInt16>();
-										STD_LONG;
+										LOOP_AS_LONG;
 									}
 									case Type::Code::Int32:
 									{
 										auto colCast = outerColCast->Nested()->As<ColumnInt32>();
-										STD_LONG;
+										LOOP_AS_LONG;
 									}
 									case Type::Code::UInt32:
 									{
 										auto colCast = outerColCast->Nested()->As<ColumnUInt32>();
-										STD_LONG;
+										LOOP_AS_LONG;
 									}
 									case Type::Code::Int64:
 									{
 										auto colCast = outerColCast->Nested()->As<ColumnInt64>();
-										STD_LONG;
+										LOOP_AS_LONG;
 									}
 									case Type::Code::UInt64:
 									{
 										auto colCast = outerColCast->Nested()->As<ColumnUInt64>();
-										STD_LONG;
+										LOOP_AS_LONG;
 									}
 									case Type::Code::Float32:
 									{
 										auto colCast = outerColCast->Nested()->As<ColumnFloat32>();
-										STD_LONG;
+										LOOP_AS_LONG;
 									}
 									case Type::Code::Float64:
 									{
 										auto colCast = outerColCast->Nested()->As<ColumnFloat64>();
-										STD_LONG;
+										LOOP_AS_LONG;
 									}
 									case Type::Code::Enum8:
 									{
 										auto colCast = outerColCast->Nested()->As<ColumnEnum8>();
-										STD_ENUM;
+										LOOP_AS_ENUM;
 									}
 									case Type::Code::Enum16:
 									{
 										auto colCast = outerColCast->Nested()->As<ColumnEnum16>();
-										STD_ENUM;
+										LOOP_AS_ENUM;
 									}
 									case Type::Code::String:
 									{
 										auto colCast = outerColCast->Nested()->As<ColumnString>();
-										STD_STRING;
+										LOOP_AS_STRING;
 									}
 									case Type::Code::FixedString:
 									{
 										auto colCast = outerColCast->Nested()->As<ColumnFixedString>();
-										STD_STRING;
+										LOOP_AS_STRING;
 									}
 									default:
 									{
@@ -240,6 +243,10 @@ size_t chc_select(void* instance, char* query, zend_fcall_info* fci, zend_fcall_
 						}
 					}
 				}
+#undef LOOP_AS_LONG
+#undef LOOP_AS_DOUBLE
+#undef LOOP_AS_ENUM
+#undef LOOP_AS_STRING
 			}	
 			/* Send to callback */
 			fci->retval = &result;
