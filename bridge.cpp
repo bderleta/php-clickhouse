@@ -151,7 +151,7 @@ size_t chc_select(void* instance, char* query, zend_fcall_info* fci, zend_fcall_
 						auto outerColCast = dblock[col]->As<ColumnNullable>();
 						for (size_t row = 0; row < rowCount; ++row) {
 							if (outerColCast->IsNull(row)) {
-								add_assoc_null(rowCache[row], colName);	
+								add_assoc_null(&rows[row], colName);	
 							} else {
 								switch (outerColCast->Type()->As<NullableType>()->GetNestedType()->GetCode()) {
 									case Type::Code::Int8:
@@ -249,11 +249,11 @@ size_t chc_select(void* instance, char* query, zend_fcall_info* fci, zend_fcall_
 			/* Send to callback */
 			fci->retval = &result;
 			fci->param_count = 1;
-			fci->params = block;
+			fci->params = &block;
 			fci->no_separation = 0;
 			ret = zend_call_function(fci, fci_cache);
 
-			zval_ptr_dtor(block);
+			zval_ptr_dtor(&block);
 			/* If not a boolean is returned, assume continue */
 			if ((Z_TYPE(result) != IS_TRUE) && (Z_TYPE(result) != IS_FALSE)) 
 				return true;
