@@ -35,7 +35,7 @@ size_t chc_select(void* instance, char* query, zend_fcall_info* fci, zend_fcall_
 	Client* client = (Client*)instance;
 	try {
 		size_t total = 0;
-		auto onBlock = [&fci, &fci_cache, &total] (const Block& dblock) : bool
+		auto onBlock = [&fci, &fci_cache, &total] (const Block& dblock) -> bool
 		{
 			zval block, result;
 			int ret;
