@@ -252,7 +252,6 @@ size_t chc_select(void* instance, char* query, zend_fcall_info* fci, zend_fcall_
 			fci->params = &block;
 			fci->no_separation = 0;
 			ret = zend_call_function(fci, fci_cache);
-
 			zval_ptr_dtor(&block);
 			/* If not a boolean is returned, assume continue */
 			if ((Z_TYPE(result) != IS_TRUE) && (Z_TYPE(result) != IS_FALSE)) 
