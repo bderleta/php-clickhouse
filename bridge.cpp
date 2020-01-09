@@ -91,10 +91,6 @@ size_t chc_select(void* instance, char* query, zend_fcall_info* fci, zend_fcall_
 #ifndef OVEROPTIMIZATION
 				const char* colName = dblock.GetColumnName(col).c_str();
 #endif 
-						
-				/**
-				 * TODO: Support for DATE / DATETIME ?
-				 */
 				switch (dblock[col]->Type()->GetCode()) {
 					case Type::Code::Int8:
 					{
