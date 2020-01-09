@@ -255,6 +255,8 @@ size_t chc_select(void* instance, char* query, zend_fcall_info* fci, zend_fcall_
 			fci->no_separation = 0;
 			ret = zend_call_function(fci, fci_cache);
 			i_zval_ptr_dtor(&block);
+			if (Z_TYPE_P(result) != IS_BOOL) convert_to_boolean(result);
+			return (Z_TYPE_P(result) == IS_TRUE);
 		};
 		client->Select(string(query), onBlock);
 		return total;
