@@ -28,7 +28,8 @@ Enable the extension in `php.ini` via `extension=clickhouse.so` and optionally r
 ### Support for large numeric values not supported natively by PHP (UInt64, Int128, Decimal) as strings
 
 UInt64 is supported by native `std::to_string` function, therefore its performance is somewhat acceptable. Possible optimization is to use string only for values
-exceeding the Int64 range, at the cost of additional check and lack of consistency.
+exceeding the Int64 range, at the cost of additional check and lack of consistency. PHP generally does recognize UInt64 as `zend_ulong` internally, but it is 
+currently used as array indexes, but not values. 
 
 Int128 family (Decimal types) are converted to string using code partially sourced from clickhouse-cpp-lib's unit tests, so it's performance is rather mediocre.
 
