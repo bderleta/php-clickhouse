@@ -144,7 +144,7 @@ size_t chc_select(void* instance, char* query, zend_fcall_info* fci, zend_fcall_
 					case Type::Code::Decimal128:
 					{
 						auto colCast = dblock[col]->As<ColumnDecimal>();
-						LOOP_AS_CAST_STRING;
+						LOOP_AS_INT128;
 					}
 					case Type::Code::Float32:
 					{
@@ -230,7 +230,7 @@ size_t chc_select(void* instance, char* query, zend_fcall_info* fci, zend_fcall_
 							case Type::Code::Decimal128:
 							{
 								auto colCast = outerColCast->Nested()->As<ColumnDecimal>();
-								LOOP_AS_CAST_STRING;
+								LOOP_AS_INT128;
 							}
 							case Type::Code::Float32:
 							{
