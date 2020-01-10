@@ -19,6 +19,11 @@ auto int128_to_string = [](Int128 value, size_t scale) {
 			result += ".";
 		value /= 10;
 	}
+	while (w < scale) {
+		result += '0';
+		if ((++w) == scale)
+			result += ".";
+	}
 	if (w == scale)
 		result += '0';
 	if (result.empty()) {
