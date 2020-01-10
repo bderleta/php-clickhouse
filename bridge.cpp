@@ -138,6 +138,14 @@ size_t chc_select(void* instance, char* query, zend_fcall_info* fci, zend_fcall_
 						/* https://github.com/ClickHouse/ClickHouse/issues/746 */
 						LOOP_AS_NULL;
 					}
+					case Type::Code::Decimal:
+					case Type::Code::Decimal32:
+					case Type::Code::Decimal64:
+					case Type::Code::Decimal128:
+					{
+						auto colCast = dblock[col]->As<ColumnDecimal>();
+						LOOP_AS_CAST_STRING;
+					}
 					case Type::Code::Float32:
 					{
 						auto colCast = dblock[col]->As<ColumnFloat32>();
@@ -207,7 +215,6 @@ size_t chc_select(void* instance, char* query, zend_fcall_info* fci, zend_fcall_
 								auto colCast = outerColCast->Nested()->As<ColumnInt64>();
 								LOOP_NULLABLE_AS_LONG;
 							}
-							/* PHP does not support uint64 nor int128 */
 							case Type::Code::UInt64:
 							{
 								auto colCast = outerColCast->Nested()->As<ColumnUInt64>();
@@ -216,6 +223,14 @@ size_t chc_select(void* instance, char* query, zend_fcall_info* fci, zend_fcall_
 							case Type::Code::Int128:
 							{
 								LOOP_AS_NULL;
+							}
+							case Type::Code::Decimal:
+							case Type::Code::Decimal32:
+							case Type::Code::Decimal64:
+							case Type::Code::Decimal128:
+							{
+								auto colCast = outerColCast->Nested()->As<ColumnDecimal>();
+								LOOP_AS_CAST_STRING;
 							}
 							case Type::Code::Float32:
 							{
