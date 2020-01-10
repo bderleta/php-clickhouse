@@ -18,7 +18,7 @@ auto int128_to_string = [](Int128 value, size_t scale) {
 	size_t w = 0;
 	while (value) {
 		result += static_cast<char>(value % 10) + '0';
-		if ((w++) == scale)
+		if ((++w) == scale)
 			result += ".";
 		value /= 10;
 	}
