@@ -21,7 +21,7 @@
 				} \
 				break
 #define LOOP_AS_CAST_STRING for (size_t row = 0; row < rowCount; ++row) { \
-					string s( colCast->At(row) ); \
+					string s = to_string(colCast->At(row)); \
 					add_assoc_stringl(&rows[row], colName, s.c_str(), s.length()); \
 				} \
 				break
@@ -57,7 +57,7 @@
 				if (outerColCast->IsNull(row)) \
 					add_assoc_null(&rows[row], colName); \
 				else { \
-					string s( colCast->At(row) ); \
+					string s = to_string(colCast->At(row)); \
 					add_assoc_stringl(&rows[row], colName, s.c_str(), s.length()); \
 				} \
 				} \
