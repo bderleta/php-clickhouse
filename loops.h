@@ -20,6 +20,11 @@
 					add_assoc_stringl(&rows[row], colName, colCast->At(row).c_str(), colCast->At(row).length()); \
 				} \
 				break
+#define LOOP_AS_CAST_STRING for (size_t row = 0; row < rowCount; ++row) { \
+					string s( colCast->At(row) ); \
+					add_assoc_stringl(&rows[row], colName, s.c_str(), s.length()); \
+				} \
+				break
 #define LOOP_NULLABLE_AS_LONG for (size_t row = 0; row < rowCount; ++row) { \
 				if (outerColCast->IsNull(row)) \
 					add_assoc_null(&rows[row], colName); \
@@ -46,6 +51,15 @@
 					add_assoc_null(&rows[row], colName); \
 				else \
 					add_assoc_stringl(&rows[row], colName, colCast->At(row).c_str(), colCast->At(row).length()); \
+				} \
+				break
+#define LOOP_NULLABLE_AS_CAST_STRING for (size_t row = 0; row < rowCount; ++row) { \
+				if (outerColCast->IsNull(row)) \
+					add_assoc_null(&rows[row], colName); \
+				else { \
+					string s( colCast->At(row) ); \
+					add_assoc_stringl(&rows[row], colName, s.c_str(), s.length()); \
+				} \
 				} \
 				break
 #define LOOP_AS_NULL for (size_t row = 0; row < rowCount; ++row) { \

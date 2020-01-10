@@ -130,8 +130,8 @@ size_t chc_select(void* instance, char* query, zend_fcall_info* fci, zend_fcall_
 					}
 					case Type::Code::UInt64:
 					{
-						auto colCast = dblock[col]->As<ColumnString>();
-						LOOP_AS_STRING;
+						auto colCast = dblock[col]->As<ColumnUInt64>();
+						LOOP_AS_CAST_STRING;
 					}
 					case Type::Code::Int128:
 					{
@@ -210,13 +210,12 @@ size_t chc_select(void* instance, char* query, zend_fcall_info* fci, zend_fcall_
 							/* PHP does not support uint64 nor int128 */
 							case Type::Code::UInt64:
 							{
-								auto colCast = outerColCast->Nested()->As<ColumnString>();
-								LOOP_NULLABLE_AS_STRING;
+								auto colCast = outerColCast->Nested()->As<ColumnUInt64>();
+								LOOP_NULLABLE_AS_CAST_STRING;
 							}
 							case Type::Code::Int128:
 							{
-								auto colCast = outerColCast->Nested()->As<ColumnString>();
-								LOOP_NULLABLE_AS_STRING;
+								LOOP_AS_NULL;
 							}
 							case Type::Code::Float32:
 							{
