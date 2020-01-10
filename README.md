@@ -3,8 +3,8 @@ Implementation of ClickHouse C++ client as a PHP 7+ extension. Does not cover da
 
 The main goal is to achieve better performance than pure-PHP clients, by using binary protocol, and better memory management. 
 
-Optional weird optimizations, like returning results as indexed array instead of associative ones may be enabled using `./configure --enable-overoptimization`. 
-They provide some speedup, but at the cost of losing some functionality, so by default that option is disabled.
+Optional weird optimizations, like returning results as indexed array instead of associative ones, or returning decimals as floats, may be enabled using 
+`./configure` flag `--enable-overoptimization`. They provide some speedup, but at the cost of losing some functionality, so by default that option is disabled.
 
 ## Prerequisites
 
@@ -33,7 +33,7 @@ There are no sights of forecoming native support for such high / accurate numeri
 ### Date/DateTime support
 
 By default, Date and DateTime values are returned as integer (UNIX timestamps). Optionally, you can enable returning them as a formatted string in local timezone,
-using `./configure --enable-date-stringify`.
+using `./configure` flag `--enable-date-stringify`.
 
 ## To-do
 
