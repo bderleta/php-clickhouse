@@ -27,17 +27,18 @@ Enable the extension in `php.ini` via `extension=clickhouse.so` and optionally r
 
 ### Support for large numeric values not supported natively by PHP (UInt64, Int128, Decimal) as strings
 
-UInt64 is supported by native `std::to_string` function, therefore its performance is somewhat acceptable. Possible optimization is to use string only for values
-exceeding the Int64 range, at the cost of additional check and lack of consistency. PHP generally does recognize UInt64 as `zend_ulong` internally, but it is 
-currently used as array indexes, but not values. 
+UInt64 and Int128 family (Decimal types) are converted to string using code of rather mediocre performance.
+There are no sights of forecoming native support for such high / accurate numeric values in PHP.
 
-Int128 family (Decimal types) are converted to string using code partially sourced from clickhouse-cpp-lib's unit tests, so it's performance is rather mediocre.
-There are no sights of forecoming native support for such high / accurate numeric values.
+### Date/DateTime support
+
+By default, Date and DateTime values are returned as integer (UNIX timestamps). Optionally, you can enable returning them as a formatted string in local timezone,
+using `./configure --enable-date-stringify`.
 
 ## To-do
 
-- Support for Date / DateTime fields using strftime or PHP's native DateTimeImmutable
-- Support for Array, Tuple and the rest of complex fields 
+- Support for Array, Tuple
+- Support for IPv4, IPv6 and UUID types
 
 ## Usage
 
