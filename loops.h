@@ -10,11 +10,9 @@ auto int128_to_string = [](Int128 value, size_t scale) {
 	php_printf("Converting value with scale %lu !!!\r\n", scale);
 	std::string result;
 	const bool sign = value >= 0;
-
 	if (!sign) {
 		value = -value;
 	}
-
 	size_t w = 0;
 	while (value) {
 		result += static_cast<char>(value % 10) + '0';
