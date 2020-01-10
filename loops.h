@@ -17,7 +17,7 @@ using Int128 = __int128;
  */
 char* dec128_to_pchar(Int128 value, size_t scale, char* buffer) {
 	bool sign = (value < 0);
-	char* s = &buffer[48];
+	char* s = &buffer[47];
 	size_t w = 0;
 	*(--s) = 0;
 	if (sign)
@@ -42,7 +42,7 @@ char* dec128_to_pchar(Int128 value, size_t scale, char* buffer) {
 
 char* int128_to_pchar(Int128 value, char* buffer) {
 	bool sign = (value < 0);
-	char* s = &buffer[48];
+	char* s = &buffer[47];
 	*(--s) = 0;
 	if (sign)
 		value = -value;
