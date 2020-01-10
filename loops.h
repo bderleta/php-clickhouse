@@ -7,7 +7,6 @@
 using Int128 = __int128;
 
 auto int128_to_string = [](Int128 value, size_t scale) {
-	php_printf("Converting value with scale %lu !!!\r\n", scale);
 	std::string result;
 	const bool sign = value >= 0;
 	if (!sign) {
@@ -21,15 +20,13 @@ auto int128_to_string = [](Int128 value, size_t scale) {
 		value /= 10;
 	}
 	if (w == scale)
-		result += "0";
+		result += '0';
 	if (result.empty()) {
 		result = "0";
 	} else if (!sign) {
 		result.push_back('-');
 	}
-
 	std::reverse(result.begin(), result.end());
-
 	return result;
 };
 
