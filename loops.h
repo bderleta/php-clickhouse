@@ -130,8 +130,7 @@ auto int128_to_string = [](Int128 value, size_t scale) {
 				} \
 				break
 #define LOOP_AS_INT128(scale) for (size_t row = 0; row < rowCount; ++row) { \
-					string s = to_string(colCast->At(row) / pow(10, scale)); \
-					add_next_index_stringl(&rows[row], s.c_str(), s.length()); \
+					add_next_index_double(&rows[row], colCast->At(row) / pow(10, scale)); \
 				} \
 				break
 #define LOOP_NULLABLE_AS_LONG for (size_t row = 0; row < rowCount; ++row) { \
@@ -175,8 +174,7 @@ auto int128_to_string = [](Int128 value, size_t scale) {
 				if (outerColCast->IsNull(row)) \
 					add_next_index_null(&rows[row]); \
 				else { \
-					string s = to_string(colCast->At(row) / pow(10, scale));  \
-					add_next_index_stringl(&rows[row], s.c_str(), s.length()); \
+					add_next_index_double(&rows[row], colCast->At(row) / pow(10, scale));
 				} \
 				} \
 				break
