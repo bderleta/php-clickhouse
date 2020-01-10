@@ -136,12 +136,12 @@ size_t chc_select(void* instance, char* query, zend_fcall_info* fci, zend_fcall_
 					case Type::Code::Float32:
 					{
 						auto colCast = dblock[col]->As<ColumnFloat32>();
-						LOOP_AS_LONG;
+						LOOP_AS_DOUBLE;
 					}
 					case Type::Code::Float64:
 					{
 						auto colCast = dblock[col]->As<ColumnFloat64>();
-						LOOP_AS_LONG;
+						LOOP_AS_DOUBLE;
 					}
 					case Type::Code::Enum8:
 					{
@@ -210,12 +210,12 @@ size_t chc_select(void* instance, char* query, zend_fcall_info* fci, zend_fcall_
 							case Type::Code::Float32:
 							{
 								auto colCast = outerColCast->Nested()->As<ColumnFloat32>();
-								LOOP_NULLABLE_AS_LONG;
+								LOOP_NULLABLE_AS_DOUBLE;
 							}
 							case Type::Code::Float64:
 							{
 								auto colCast = outerColCast->Nested()->As<ColumnFloat64>();
-								LOOP_NULLABLE_AS_LONG;
+								LOOP_NULLABLE_AS_DOUBLE;
 							}
 							case Type::Code::Enum8:
 							{
