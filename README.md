@@ -32,6 +32,7 @@ exceeding the Int64 range, at the cost of additional check and lack of consisten
 currently used as array indexes, but not values. 
 
 Int128 family (Decimal types) are converted to string using code partially sourced from clickhouse-cpp-lib's unit tests, so it's performance is rather mediocre.
+There are no sights of forecoming native support for such high / accurate numeric values.
 
 ## To-do
 
