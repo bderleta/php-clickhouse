@@ -134,7 +134,7 @@ size_t chc_select(void* instance, char* query, zend_fcall_info* fci, zend_fcall_
 					case Type::Code::UInt64:
 					{
 						auto colCast = dblock[col]->As<ColumnUInt64>();
-						LOOP_AS_CAST_STRING;
+						LOOP_AS_INT128(0);
 					}
 					case Type::Code::Int128:
 					{
@@ -223,7 +223,7 @@ size_t chc_select(void* instance, char* query, zend_fcall_info* fci, zend_fcall_
 							case Type::Code::UInt64:
 							{
 								auto colCast = outerColCast->Nested()->As<ColumnUInt64>();
-								LOOP_NULLABLE_AS_CAST_STRING;
+								LOOP_NULLABLE_AS_INT128(0);
 							}
 							case Type::Code::Int128:
 							{
