@@ -30,7 +30,8 @@ void* chc_construct(char* host, char* username, char* password, char* default_da
 
 void chc_destruct(void* instance) {
 	Client* client = (Client*)instance;
-	delete client;
+	if (client)
+		delete client;
 }
 
 void chc_execute(void* instance, char* query) {
