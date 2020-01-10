@@ -27,6 +27,11 @@ Enable the extension in `php.ini` via `extension=clickhouse.so` and optionally r
 
 - Support for large numeric values non-natively supported by PHP (UInt64, Int128, Decimal) as strings
 
+UInt64 is supported by native to_string function, therefore its performance is somewhat acceptable. Possible optimization is to use string only for values
+exceeding the Int64 range, at the cost of additional check and lack of consistency.
+
+Int128 family (Decimal types) are converted to string using code partially sourced from clickhouse-cpp-lib's unit tests, so it's performance is rather mediocre.
+
 ## To-do
 
 - Support for Date / DateTime fields using strftime or PHP's native DateTimeImmutable
