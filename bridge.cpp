@@ -90,6 +90,7 @@ size_t chc_select(void* instance, char* query, zend_fcall_info* fci, zend_fcall_
 			for (size_t col = 0; col < colCount; ++col) {
 #ifndef OVEROPTIMIZATION
 				const char* colName = dblock.GetColumnName(col).c_str();
+				php_printf("Received %s of type %s\r\n", colName, dblock[col]->Type()->GetName().c_str());
 #endif 
 				switch (dblock[col]->Type()->GetCode()) {
 					case Type::Code::Int8:
