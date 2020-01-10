@@ -129,10 +129,18 @@ auto int128_to_string = [](Int128 value, size_t scale) {
 					add_next_index_stringl(&rows[row], s.c_str(), s.length()); \
 				} \
 				break
+#ifndef OVEROPTIMIZATION_INSANE
+#define LOOP_AS_INT128(scale) for (size_t row = 0; row < rowCount; ++row) { \
+					string s = int128_to_string(colCast->At(row), scale); \
+					add_next_index_stringl(&rows[row], s.c_str(), s.length()); \
+				} \
+				break
+#else
 #define LOOP_AS_INT128(scale) for (size_t row = 0; row < rowCount; ++row) { \
 					add_next_index_double(&rows[row], colCast->At(row) / pow(10, scale)); \
 				} \
 				break
+#endif
 #define LOOP_NULLABLE_AS_LONG for (size_t row = 0; row < rowCount; ++row) { \
 				if (outerColCast->IsNull(row)) \
 					add_next_index_null(&rows[row]); \
@@ -170,6 +178,17 @@ auto int128_to_string = [](Int128 value, size_t scale) {
 				} \
 				} \
 				break
+#ifndef OVEROPTIMIZATION_INSANE
+#define LOOP_NULLABLE_AS_INT128(scale) for (size_t row = 0; row < rowCount; ++row) { \
+				if (outerColCast->IsNull(row)) \
+					add_next_index_null(&rows[row]); \
+				else { \
+					string s = int128_to_string(colCast->At(row), scale); \
+					add_next_index_stringl(&rows[row], s.c_str(), s.length()); \
+				} \
+				} \
+				break
+#else
 #define LOOP_NULLABLE_AS_INT128(scale) for (size_t row = 0; row < rowCount; ++row) { \
 				if (outerColCast->IsNull(row)) \
 					add_next_index_null(&rows[row]); \
@@ -178,6 +197,7 @@ auto int128_to_string = [](Int128 value, size_t scale) {
 				} \
 				} \
 				break
+#endif
 #define LOOP_AS_NULL for (size_t row = 0; row < rowCount; ++row) { \
 					add_next_index_null(&rows[row]); \
 				} \
