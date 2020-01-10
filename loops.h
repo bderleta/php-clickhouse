@@ -7,7 +7,7 @@
 using Int128 = __int128;
 
 auto int128_to_string = [](Int128 value, size_t scale) {
-	php_printf("Converting value %llu with scale %llu !!!\r\n", value, scale);
+	php_printf("Converting value with scale %lu !!!\r\n", scale);
 	std::string result;
 	const bool sign = value >= 0;
 
