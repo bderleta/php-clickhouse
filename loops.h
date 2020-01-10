@@ -16,15 +16,12 @@ using Int128 = __int128;
  * @return 
  */
 char* int128_to_pchar(Int128 value, size_t scale, char* buffer) {
-	php_printf("Using pchar!\r\n");
-	bool sign = false;
+	bool sign = (value < 0);
 	char* s = &buffer[48];
 	size_t w = 0;
 	*(--s) = 0;
-	if (value < 0) {
-		sign = true;
+	if (sign)
 		value = -value;
-	}
 	while (value) {
 		*(--s) = (value % 10) + '0';
 		if ((++w) == scale)
