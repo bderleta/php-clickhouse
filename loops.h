@@ -46,12 +46,16 @@ char* int128_to_pchar(Int128 value, char* buffer) {
 	*(--s) = 0;
 	if (sign)
 		value = -value;
-	while (value) {
-		*(--s) = (value % 10) + '0';
-		value /= 10;
+	if (value == 0)
+		*(--s) = '0';
+	else {
+		while (value) {
+			*(--s) = (value % 10) + '0';
+			value /= 10;
+		}
+		if (sign)
+			*(--s) = '-';
 	}
-	if (sign)
-		*(--s) = '-';
 	return s;
 }
 
