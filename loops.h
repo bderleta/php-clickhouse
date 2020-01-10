@@ -6,32 +6,41 @@
 
 using Int128 = __int128;
 
-auto int128_to_string = [](Int128 value, size_t scale) {
-	std::string result;
-	const bool sign = value >= 0;
-	if (!sign) {
+/**
+ * Convert Int128 to char*
+ * Maximal value of Int128 is 39 decimal digits long. Including optional sign, decimal separator and null character, effective buffer length is 42.
+ * With safety margin, this function expects a buffer at least 48 characters long. 
+ * @param value
+ * @param scale
+ * @param buffer
+ * @return 
+ */
+char* int128_to_pchar(Int128 value, size_t scale, char* buffer) {
+	bool sign = false;
+	char* s = &buffer[48];
+	*(--s) = 0;
+	size_t w = 0;
+	if (value < 0) {
+		sign = true;
 		value = -value;
 	}
-	size_t w = 0;
 	while (value) {
-		result += static_cast<char>(value % 10) + '0';
+		*(--s) = (value % 10) + '0';
 		if ((++w) == scale)
-			result += ".";
+			*(--s) = '.';
 		value /= 10;
 	}
 	while (w < scale) {
-		result += '0';
+		*(--s) = '0';
 		if ((++w) == scale)
-			result += ".";
+			*(--s) = ".";
 	}
 	if (w == scale)
-		result += '0';
-	if (!sign) {
-		result.push_back('-');
-	}
-	std::reverse(result.begin(), result.end());
-	return result;
-};
+		*(--s) = '0';
+	if (sign)
+		*(--s) = '-';
+	return s;
+}
 
 #ifndef OVEROPTIMIZATION
 #define LOOP_AS_LONG for (size_t row = 0; row < rowCount; ++row) { \
@@ -56,8 +65,8 @@ auto int128_to_string = [](Int128 value, size_t scale) {
 				} \
 				break
 #define LOOP_AS_INT128(scale) for (size_t row = 0; row < rowCount; ++row) { \
-					string s = int128_to_string(colCast->At(row), scale); \
-					add_assoc_stringl(&rows[row], colName, s.c_str(), s.length()); \
+					char* s = int128_to_pchar(colCast->At(row), scale, int128buf); \
+					add_assoc_string(&rows[row], colName, s); \
 				} \
 				break
 #define LOOP_NULLABLE_AS_LONG for (size_t row = 0; row < rowCount; ++row) { \
@@ -101,8 +110,8 @@ auto int128_to_string = [](Int128 value, size_t scale) {
 				if (outerColCast->IsNull(row)) \
 					add_assoc_null(&rows[row], colName); \
 				else { \
-					string s = int128_to_string(colCast->At(row), scale); \
-					add_assoc_stringl(&rows[row], colName, s.c_str(), s.length()); \
+					char* s = int128_to_pchar(colCast->At(row), scale, int128buf); \
+					add_assoc_string(&rows[row], colName, s); \
 				} \
 				} \
 				break
@@ -134,8 +143,8 @@ auto int128_to_string = [](Int128 value, size_t scale) {
 				break
 #ifndef OVEROPTIMIZATION_INSANE
 #define LOOP_AS_INT128(scale) for (size_t row = 0; row < rowCount; ++row) { \
-					string s = int128_to_string(colCast->At(row), scale); \
-					add_next_index_stringl(&rows[row], s.c_str(), s.length()); \
+					char* s = int128_to_pchar(colCast->At(row), scale, int128buf); \
+					add_next_index_string(&rows[row], s); \
 				} \
 				break
 #else
@@ -186,8 +195,8 @@ auto int128_to_string = [](Int128 value, size_t scale) {
 				if (outerColCast->IsNull(row)) \
 					add_next_index_null(&rows[row]); \
 				else { \
-					string s = int128_to_string(colCast->At(row), scale); \
-					add_next_index_stringl(&rows[row], s.c_str(), s.length()); \
+					char* s = int128_to_pchar(colCast->At(row), scale, int128buf); \
+					add_next_index_string(&rows[row], s); \
 				} \
 				} \
 				break

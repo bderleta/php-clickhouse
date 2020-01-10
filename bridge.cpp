@@ -77,6 +77,7 @@ size_t chc_select(void* instance, char* query, zend_fcall_info* fci, zend_fcall_
 		{
 			zval result, block;
 			int ret;
+			char int128buf[48];
 			size_t rowCount = dblock.GetRowCount(), colCount = dblock.GetColumnCount();
 			if (rowCount == 0)
 				return true;
