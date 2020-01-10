@@ -33,7 +33,7 @@ char* int128_to_pchar(Int128 value, size_t scale, char* buffer) {
 	while (w < scale) {
 		*(--s) = '0';
 		if ((++w) == scale)
-			*(--s) = ".";
+			*(--s) = '.';
 	}
 	if (w == scale)
 		*(--s) = '0';
