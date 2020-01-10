@@ -6,7 +6,7 @@
 
 using Int128 = __int128;
 
-auto int128_to_string = [](Int128 value) {
+auto int128_to_string = [](Int128 value, size_t scale) {
 	std::string result;
 	const bool sign = value >= 0;
 
@@ -52,8 +52,8 @@ auto int128_to_string = [](Int128 value) {
 					add_assoc_stringl(&rows[row], colName, s.c_str(), s.length()); \
 				} \
 				break
-#define LOOP_AS_INT128 for (size_t row = 0; row < rowCount; ++row) { \
-					string s = int128_to_string(colCast->At(row)); \
+#define LOOP_AS_INT128(scale) for (size_t row = 0; row < rowCount; ++row) { \
+					string s = int128_to_string(colCast->At(row), scale); \
 					add_assoc_stringl(&rows[row], colName, s.c_str(), s.length()); \
 				} \
 				break
@@ -94,11 +94,11 @@ auto int128_to_string = [](Int128 value) {
 				} \
 				} \
 				break
-#define LOOP_NULLABLE_AS_INT128 for (size_t row = 0; row < rowCount; ++row) { \
+#define LOOP_NULLABLE_AS_INT128(scale) for (size_t row = 0; row < rowCount; ++row) { \
 				if (outerColCast->IsNull(row)) \
 					add_assoc_null(&rows[row], colName); \
 				else { \
-					string s = int128_to_string(colCast->At(row)); \
+					string s = int128_to_string(colCast->At(row), scale); \
 					add_assoc_stringl(&rows[row], colName, s.c_str(), s.length()); \
 				} \
 				} \
@@ -129,8 +129,8 @@ auto int128_to_string = [](Int128 value) {
 					add_next_index_stringl(&rows[row], s.c_str(), s.length()); \
 				} \
 				break
-#define LOOP_AS_INT128 for (size_t row = 0; row < rowCount; ++row) { \
-					string s = int128_to_string(colCast->At(row)); \
+#define LOOP_AS_INT128(scale) for (size_t row = 0; row < rowCount; ++row) { \
+					string s = int128_to_string(colCast->At(row), scale); \
 					add_next_index_stringl(&rows[row], s.c_str(), s.length()); \
 				} \
 				break
@@ -171,11 +171,11 @@ auto int128_to_string = [](Int128 value) {
 				} \
 				} \
 				break
-#define LOOP_NULLABLE_AS_INT128 for (size_t row = 0; row < rowCount; ++row) { \
+#define LOOP_NULLABLE_AS_INT128(scale) for (size_t row = 0; row < rowCount; ++row) { \
 				if (outerColCast->IsNull(row)) \
 					add_assoc_null(&rows[row], colName); \
 				else { \
-					string s = int128_to_string(colCast->At(row)); \
+					string s = int128_to_string(colCast->At(row), scale); \
 					add_next_index_stringl(&rows[row], s.c_str(), s.length()); \
 				} \
 				} \

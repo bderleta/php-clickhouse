@@ -136,7 +136,8 @@ size_t chc_select(void* instance, char* query, zend_fcall_info* fci, zend_fcall_
 					case Type::Code::Int128:
 					{
 						/* https://github.com/ClickHouse/ClickHouse/issues/746 */
-						LOOP_AS_NULL;
+						auto colCast = dblock[col]->As<ColumnInt128>();
+						LOOP_AS_INT128(0);
 					}
 					case Type::Code::Decimal:
 					case Type::Code::Decimal32:
@@ -144,7 +145,8 @@ size_t chc_select(void* instance, char* query, zend_fcall_info* fci, zend_fcall_
 					case Type::Code::Decimal128:
 					{
 						auto colCast = dblock[col]->As<ColumnDecimal>();
-						LOOP_AS_INT128;
+						size_t scale = dblock[col]->Type()->As<DecimalType>()->GetScale();
+						LOOP_AS_INT128(scale);
 					}
 					case Type::Code::Float32:
 					{
@@ -222,7 +224,8 @@ size_t chc_select(void* instance, char* query, zend_fcall_info* fci, zend_fcall_
 							}
 							case Type::Code::Int128:
 							{
-								LOOP_AS_NULL;
+								auto colCast = dblock[col]->As<ColumnInt128>();
+								LOOP_NULLABLE_AS_INT128(0);
 							}
 							case Type::Code::Decimal:
 							case Type::Code::Decimal32:
@@ -230,7 +233,8 @@ size_t chc_select(void* instance, char* query, zend_fcall_info* fci, zend_fcall_
 							case Type::Code::Decimal128:
 							{
 								auto colCast = outerColCast->Nested()->As<ColumnDecimal>();
-								LOOP_AS_INT128;
+								size_t scale = outerColCast->Type()->As<NullableType>()->GetNestedType()->As<DecimalType>()->GetScale();
+								LOOP_NULLABLE_AS_INT128(scale);
 							}
 							case Type::Code::Float32:
 							{
