@@ -2,7 +2,9 @@
 #define LOOPS_H
 	
 #include "config.h"
-#include <clickhouse/columns/numeric.h>
+#include <algorithm>
+
+using Int128 = __int128;
 
 auto int128_to_string = [](Int128 value) {
 	std::string result;
