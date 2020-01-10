@@ -5,7 +5,7 @@ PHP_ARG_ENABLE(overoptimization, whether to enable overoptimization,
 [  --enable-overoptimization 
                           Enable miscellaneous weird optimizations default=no], no, no)
 
-PHP_ARG_ENABLE(overoptimization, whether to enable overoptimization,
+PHP_ARG_ENABLE(date-stringify, whether to enable timestamps as strings,
 [  --enable-date-stringify 
                           Enable returning Date/DateTime fields as strings in local TZ default=no], no, no)
 
