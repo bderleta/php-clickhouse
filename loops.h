@@ -26,9 +26,7 @@ auto int128_to_string = [](Int128 value, size_t scale) {
 	}
 	if (w == scale)
 		result += '0';
-	if (result.empty()) {
-		result = "0";
-	} else if (!sign) {
+	if (!sign) {
 		result.push_back('-');
 	}
 	std::reverse(result.begin(), result.end());
