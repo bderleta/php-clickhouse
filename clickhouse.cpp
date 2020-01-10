@@ -131,7 +131,7 @@ PHP_METHOD(ClickHouse, __construct)
 		Z_PARAM_STRING_OR_NULL(user, user_len)
 		Z_PARAM_STRING_OR_NULL(password, password_len)
 		Z_PARAM_STRING_OR_NULL(default_database, default_database_len)
-		Z_PARAM_LONG_EX(port, port_null, 1, 0)
+		Z_PARAM_LONG_OR_NULL(port, port_null)
 		Z_PARAM_BOOL(compression)
 	ZEND_PARSE_PARAMETERS_END();
 	
