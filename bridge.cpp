@@ -184,12 +184,20 @@ size_t chc_select(void* instance, char* query, zend_fcall_info* fci, zend_fcall_
 					case Type::Code::Date:
 					{
 						auto colCast = dblock[col]->As<ColumnDate>();
+#ifdef DATE_STRINGIFY
 						LOOP_AS_X(date_to_pchar);
+#else
+						LOOP_AS_LONG;
+#endif
 					}
 					case Type::Code::DateTime:
 					{
 						auto colCast = dblock[col]->As<ColumnDateTime>();
+#ifdef DATE_STRINGIFY
 						LOOP_AS_X(datetime_to_pchar);
+#else
+						LOOP_AS_LONG;
+#endif
 					}
 					case Type::Code::Nullable:
 					{
@@ -282,12 +290,20 @@ size_t chc_select(void* instance, char* query, zend_fcall_info* fci, zend_fcall_
 							case Type::Code::Date:
 							{
 								auto colCast = outerColCast->Nested()->As<ColumnDate>();
+#ifdef DATE_STRINGIFY
 								LOOP_NULLABLE_AS_X(date_to_pchar);
+#else
+								LOOP_NULLABLE_AS_LONG;
+#endif
 							}
 							case Type::Code::DateTime:
 							{
 								auto colCast = outerColCast->Nested()->As<ColumnDateTime>();
+#ifdef DATE_STRINGIFY
 								LOOP_NULLABLE_AS_X(datetime_to_pchar);
+#else
+								LOOP_NULLABLE_AS_LONG;
+#endif
 							}
 							default:
 							{

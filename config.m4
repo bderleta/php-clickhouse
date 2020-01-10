@@ -5,6 +5,9 @@ PHP_ARG_ENABLE(overoptimization, whether to enable overoptimization,
 [  --enable-overoptimization 
                           Enable miscellaneous weird optimizations default=no], no, no)
 
+PHP_ARG_ENABLE(overoptimization, whether to enable overoptimization,
+[  --enable-date-stringify 
+                          Enable returning Date/DateTime fields as strings in local TZ default=no], no, no)
 
 if test "$PHP_CLICKHOUSE" != "no"; then
   CXXFLAGS="-std=c++14"
@@ -16,6 +19,10 @@ if test "$PHP_CLICKHOUSE" != "no"; then
 	
   if test "$PHP_OVEROPTIMIZATION" != "no"; then
 	AC_DEFINE(OVEROPTIMIZATION,1,[Enable miscellaneous weird optimizations])
+  fi
+
+  if test "$PHP_DATE_STRINGIFY" != "no"; then
+	AC_DEFINE(DATE_STRINGIFY,1,[Enable returning Date/DateTime fields as strings in local TZ])
   fi
 
   if test "$PHP_CLICKHOUSE" = "yes"; then
