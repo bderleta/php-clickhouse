@@ -25,7 +25,7 @@ Enable the extension in `php.ini` via `extension=clickhouse.so` and optionally r
 
 ## Done
 
-- Support for large numeric values non-natively supported by PHP (UInt64, Int128, Decimal) as strings
+### Support for large numeric values non-natively supported by PHP (UInt64, Int128, Decimal) as strings
 
 UInt64 is supported by native to_string function, therefore its performance is somewhat acceptable. Possible optimization is to use string only for values
 exceeding the Int64 range, at the cost of additional check and lack of consistency.
