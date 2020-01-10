@@ -67,11 +67,13 @@ char* int128_to_pchar(Int128 value, char* buffer48) {
 char* datetime_to_pchar(std::time_t value, char* buffer48) {
 	struct tm *tm = localtime(&value);
 	strftime(buffer48, 48, "%Y-%m-%d %H:%M:%S", tm);
+	return buffer48;
 }
 
 char* date_to_pchar(std::time_t value, char* buffer48) {
 	struct tm *tm = localtime(&value);
 	strftime(buffer48, 48, "%Y-%m-%d", tm);
+	return buffer48;
 }
 
 #endif /* CONVERSIONS_H */
