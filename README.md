@@ -26,7 +26,7 @@ Enable the extension in `php.ini` via `extension=clickhouse.so` and optionally r
 ## TODO
 
 - Support for Date / DateTime fields using strftime or PHP's native DateTimeImmutable
-- Support for large numeric values non-natively supported by PHP (UInt64, Int128, Decimal) as strings
+- ~~Support for large numeric values non-natively supported by PHP (UInt64, Int128, Decimal) as strings~~
 - Support for Array, Tuple and the rest of complex fields 
 
 ## Usage
