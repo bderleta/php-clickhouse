@@ -174,7 +174,7 @@ auto int128_to_string = [](Int128 value, size_t scale) {
 				if (outerColCast->IsNull(row)) \
 					add_next_index_null(&rows[row]); \
 				else { \
-					add_next_index_double(&rows[row], colCast->At(row) / pow(10, scale));
+					add_next_index_double(&rows[row], colCast->At(row) / pow(10, scale)); \
 				} \
 				} \
 				break
