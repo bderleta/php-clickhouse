@@ -9,12 +9,12 @@ using Int128 = __int128;
  * With safety margin, this function expects a buffer at least 48 characters long. 
  * @param value		Value to convert
  * @param scale		Number of decimal digits
- * @param buffer		Magic buffer (at least 48 bytes)
+ * @param buffer48	Magic buffer (at least 48 bytes)
  * @return			Number as char*
  */
-char* dec128_to_pchar(Int128 value, size_t scale, char* buffer) {
+char* dec128_to_pchar(Int128 value, size_t scale, char* buffer48) {
 	bool sign = (value < 0);
-	char* s = &buffer[47];
+	char* s = &buffer48[47];
 	size_t w = 0;
 	*(--s) = 0;
 	if (sign)
@@ -42,12 +42,12 @@ char* dec128_to_pchar(Int128 value, size_t scale, char* buffer) {
  * Maximal value of Int128 is 39 decimal digits long. Including optional sign and null character, effective buffer length is 41.
  * With safety margin, this function expects a buffer at least 48 characters long. 
  * @param value		Value to convert
- * @param buffer		Magic buffer (at least 48 bytes)
+ * @param buffer48	Magic buffer (at least 48 bytes)
  * @return			Number as char*
  */
-char* int128_to_pchar(Int128 value, char* buffer) {
+char* int128_to_pchar(Int128 value, char* buffer48) {
 	bool sign = (value < 0);
-	char* s = &buffer[47];
+	char* s = &buffer48[47];
 	*(--s) = 0;
 	if (sign)
 		value = -value;
@@ -62,6 +62,16 @@ char* int128_to_pchar(Int128 value, char* buffer) {
 			*(--s) = '-';
 	}
 	return s;
+}
+
+char* datetime_to_pchar(std::time_t value, char* buffer48) {
+	struct tm *tm = localtime(&value);
+	strftime(buffer48, 48, "%Y-%m-%d %H:%M:%S", tm);
+}
+
+char* date_to_pchar(std::time_t value, char* buffer48) {
+	struct tm *tm = localtime(&value);
+	strftime(buffer48, 48, "%Y-%m-%d", tm);
 }
 
 #endif /* CONVERSIONS_H */

@@ -134,13 +134,13 @@ size_t chc_select(void* instance, char* query, zend_fcall_info* fci, zend_fcall_
 					case Type::Code::UInt64:
 					{
 						auto colCast = dblock[col]->As<ColumnUInt64>();
-						LOOP_AS_INT128;
+						LOOP_AS_X(int128_to_pchar);
 					}
 					case Type::Code::Int128:
 					{
 						/* https://github.com/ClickHouse/ClickHouse/issues/746 */
 						auto colCast = dblock[col]->As<ColumnInt128>();
-						LOOP_AS_INT128;
+						LOOP_AS_X(int128_to_pchar);
 					}
 					case Type::Code::Decimal:
 					case Type::Code::Decimal32:
@@ -180,6 +180,16 @@ size_t chc_select(void* instance, char* query, zend_fcall_info* fci, zend_fcall_
 					{
 						auto colCast = dblock[col]->As<ColumnFixedString>();
 						LOOP_AS_STRING;
+					}
+					case Type::Code::Date:
+					{
+						auto colCast = dblock[col]->As<ColumnDate>();
+						LOOP_AS_X(date_to_pchar);
+					}
+					case Type::Code::DateTime:
+					{
+						auto colCast = dblock[col]->As<ColumnDateTime>();
+						LOOP_AS_X(datetime_to_pchar);
 					}
 					case Type::Code::Nullable:
 					{
@@ -223,12 +233,12 @@ size_t chc_select(void* instance, char* query, zend_fcall_info* fci, zend_fcall_
 							case Type::Code::UInt64:
 							{
 								auto colCast = outerColCast->Nested()->As<ColumnUInt64>();
-								LOOP_NULLABLE_AS_INT128;
+								LOOP_NULLABLE_AS_X(int128_to_pchar);
 							}
 							case Type::Code::Int128:
 							{
 								auto colCast = dblock[col]->As<ColumnInt128>();
-								LOOP_NULLABLE_AS_INT128;
+								LOOP_NULLABLE_AS_X(int128_to_pchar);
 							}
 							case Type::Code::Decimal:
 							case Type::Code::Decimal32:
@@ -268,6 +278,16 @@ size_t chc_select(void* instance, char* query, zend_fcall_info* fci, zend_fcall_
 							{
 								auto colCast = outerColCast->Nested()->As<ColumnFixedString>();
 								LOOP_NULLABLE_AS_STRING;
+							}
+							case Type::Code::Date:
+							{
+								auto colCast = outerColCast->Nested()->As<ColumnDate>();
+								LOOP_NULLABLE_AS_X(date_to_pchar);
+							}
+							case Type::Code::DateTime:
+							{
+								auto colCast = outerColCast->Nested()->As<ColumnDateTime>();
+								LOOP_NULLABLE_AS_X(datetime_to_pchar);
 							}
 							default:
 							{
