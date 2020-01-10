@@ -22,7 +22,8 @@ auto int128_to_string = [](Int128 value, size_t scale) {
 			result += ".";
 		value /= 10;
 	}
-
+	if (w == scale)
+		result += "0";
 	if (result.empty()) {
 		result = "0";
 	} else if (!sign) {
